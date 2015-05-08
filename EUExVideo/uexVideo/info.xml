@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<uexplugins>
+    <plugin uexName="uexVideo" version="3.0.3" build = "3">
+        <info>3:重新编译，支持arm64</info>
+       <build>2:支持arm64</build>
+       <build>1:更换动画效果，修复在6.1.2上的显示问题</build>
+       <build>0:视频功能插件</build>
+	</plugin>
+</uexplugins>
