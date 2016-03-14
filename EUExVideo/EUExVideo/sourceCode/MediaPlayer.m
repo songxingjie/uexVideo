@@ -11,10 +11,17 @@
 #import "EUtility.h"
 #import "EUExBaseDefine.h"
 
+@interface MediaPlayer()
+
+@end
+
 @implementation MediaPlayer
 //@synthesize euexObj;
--(void)initWithEuex:(EUExVideo *)euexObj_{
+
+-(void)initWithEuex:(EUExVideo *)euexObj_ startTime:(float)startTime frequency:(int)frequency{
 	euexObj = euexObj_;
+    _startTime=startTime;
+    _frequency=frequency;
 }
 
 -(void)open:(NSString*)inPath{
@@ -33,50 +40,20 @@
 	}
 	if (movieURL&&[movieURL scheme])
 	{
-		PluginLog(@"movie start");
-		if ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 3.2){
-			PluginLog(@"verson >3.2");
-			MPMoviePlayerViewController *playerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:movieURL];  
-			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(myMovieViewFinishedCallback:)  
-														 name:MPMoviePlayerPlaybackDidFinishNotification  
-													   object:playerViewController];  
-			
-			[playerViewController.moviePlayer prepareToPlay];
-			[playerViewController.moviePlayer play];
-			[playerViewController.moviePlayer setFullscreen:YES];
-            [EUtility brwView:euexObj.meBrwView presentModalViewController:playerViewController animated:YES];
-			//[playerViewController release];
-		}else {
-			//如果系统版本在4.0以前，用下面这个
-			MPMoviePlayerController *MPPlayer = [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
-			MPPlayer.scalingMode = MPMovieScalingModeAspectFill;
-			[[NSNotificationCenter defaultCenter] addObserver:self
-													 selector:@selector(myMovieFinishedCallback:)
-														 name:MPMoviePlayerPlaybackDidFinishNotification
-													   object:MPPlayer];
-			[MPPlayer play];
- 		}
+        self.player=[[AVPlayerViewController alloc]init];
+        self.player.delegate=self;
+        AVPlayer *movePlayer=[[AVPlayer alloc] initWithURL:movieURL];
+        CMTime startT=CMTimeMake(_startTime,1);
+        [movePlayer seekToTime:startT];
+        self.player.player=movePlayer;
+        [self.player.player play];
+        [self.player.player addPeriodicTimeObserverForInterval:CMTimeMake(_frequency, 1) queue:NULL usingBlock:^(CMTime time){
+            float playedTime=self.player.player.currentTime.value/self.player.player.currentTime.timescale;
+            [euexObj uexVideoWithFunction:@"onPlayedWithTime" result:[@{@"playedTime":@(playedTime)} JSONFragment]];
+        }];
+        [EUtility brwView:euexObj.meBrwView presentModalViewController:self.player animated:YES];
 	}else{
 		[euexObj jsFailedWithOpId:0 errorCode:1210103 errorDes:UEX_ERROR_DESCRIBE_FILE_FORMAT];
 	}
-}
- 
--(void)myMovieFinishedCallback:(NSNotification*)aNotification
-{
-	PluginLog(@"run 1 callback");
-	MPMoviePlayerController* theMovie=[aNotification object];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:theMovie];
-	[theMovie release]; 
-}
--(void)myMovieViewFinishedCallback:(NSNotification*)aNotification {
-	PluginLog(@"run 2 callback");
-	MPMoviePlayerViewController* theMovieView=[aNotification object];
-	[theMovieView dismissMoviePlayerViewControllerAnimated];
-	[[NSNotificationCenter defaultCenter]removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:theMovieView];
-	[theMovieView release];
-	[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:YES];
-}
--(void)dealloc{
-	[super dealloc];
 }
 @end

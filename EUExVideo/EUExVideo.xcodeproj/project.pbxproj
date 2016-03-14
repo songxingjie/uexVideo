@@ -40,6 +40,15 @@
 		03442CB018B233D700CEC18D /* RecordVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordVideo.h; sourceTree = "<group>"; };
 		03442CB118B233D700CEC18D /* RecordVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordVideo.m; sourceTree = "<group>"; };
 		03442CB518B2344100CEC18D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		3CEE404F1C520B64005CD332 /* JSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		3CEE40501C520B64005CD332 /* JSONParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSONParser.h; sourceTree = "<group>"; };
+		3CEE40511C520B64005CD332 /* MD5Digest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MD5Digest.h; sourceTree = "<group>"; };
+		3CEE40521C520B64005CD332 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
+		3CEE40531C520B64005CD332 /* NSString+SBJSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
+		3CEE40541C520B64005CD332 /* SBJSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
+		3CEE40551C520B64005CD332 /* SBJsonBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
+		3CEE40561C520B64005CD332 /* SBJsonParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		3CEE40571C520B64005CD332 /* SBJsonWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +93,7 @@
 		03442C8318B2338100CEC18D /* EUExVideo */ = {
 			isa = PBXGroup;
 			children = (
+				3CEE404E1C520B64005CD332 /* JSON */,
 				03442CA718B233D700CEC18D /* engineHeader */,
 				03442CAB18B233D700CEC18D /* EUExVideo.h */,
 				03442CAC18B233D700CEC18D /* EUExVideo.m */,
@@ -120,6 +130,22 @@
 				03442CB118B233D700CEC18D /* RecordVideo.m */,
 			);
 			path = sourceCode;
+			sourceTree = "<group>";
+		};
+		3CEE404E1C520B64005CD332 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				3CEE404F1C520B64005CD332 /* JSON.h */,
+				3CEE40501C520B64005CD332 /* JSONParser.h */,
+				3CEE40511C520B64005CD332 /* MD5Digest.h */,
+				3CEE40521C520B64005CD332 /* NSObject+SBJSON.h */,
+				3CEE40531C520B64005CD332 /* NSString+SBJSON.h */,
+				3CEE40541C520B64005CD332 /* SBJSON.h */,
+				3CEE40551C520B64005CD332 /* SBJsonBase.h */,
+				3CEE40561C520B64005CD332 /* SBJsonParser.h */,
+				3CEE40571C520B64005CD332 /* SBJsonWriter.h */,
+			);
+			path = JSON;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,7 +284,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/uexVideo";
 				DSTROOT = /tmp/EUExVideo.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -275,7 +301,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/uexVideo";
 				DSTROOT = /tmp/EUExVideo.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
