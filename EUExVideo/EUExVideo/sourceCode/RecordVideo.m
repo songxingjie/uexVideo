@@ -16,12 +16,20 @@
 @implementation RecordVideo
 //@synthesize euexObj;
 
--(void)initWithEuex:(EUExVideo *)euexObj_ {
-    euexObj = euexObj_;
+
+- (instancetype)initWithEuex:(EUExVideo *)euexObj{
+    NSParameterAssert(euexObj != nil);
+    self = [super init];
+    if (self) {
+        _euexObj = euexObj;
+    }
+    return self;
 }
+
+
 -(NSString*)getSavename:(NSString*)type{
 	NSFileManager *filemag = [NSFileManager defaultManager];
-    NSString *wgtPath = [euexObj absPath:@"wgt://"];
+    NSString *wgtPath = [self.euexObj absPath:@"wgt://"];
 	NSString *videoPath = [wgtPath stringByAppendingPathComponent:@"video"];
 	if (![filemag fileExistsAtPath:videoPath]) {
 		[filemag createDirectoryAtPath:videoPath withIntermediateDirectories:YES attributes:nil error:nil];

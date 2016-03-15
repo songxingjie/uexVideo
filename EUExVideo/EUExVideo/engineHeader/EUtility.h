@@ -19,8 +19,87 @@
 #import <Foundation/Foundation.h>
 @class EBrowserView;
 void PluginLog(NSString *format, ...);
+
+typedef NS_ENUM(NSInteger,uexPluginCallbackType){
+    uexPluginCallbackWithJsonString,//回调json字符串（网页端需要首先JSON.parse才能使用）
+    uexPluginCallbackWithJsonObject //回调json对象（网页的可以直接使用）
+    
+};
+
+extern NSString * const cUexPluginCallbackInRootWindow;
+extern NSString * const cUexPluginCallbackInFrontWindow;
+
 @interface EUtility : NSObject {
 }
+
+
+
+/**
+ *  @method 回调网页js
+ *
+ *  @param pluginName   回调的插件名
+ *  @param functionName 回调的方法名
+ *  @param obj          回调给网页的对象（NSDictionary、NSArray、NSString、nil)
+ *  @param type         回调的方式（json字符串还是json对象）
+ *  @param targetBrwView 要回调的网页 请传cUexPluginCallbackTargetRootWindow(回调给起始Window）cUexPluginCallbackTargetFrontWindow(回调给最前端Window) 或者(EBrowserView *)实例
+ *
+ *  @example [EUtility uexPlugin:@"uexDemo" callbackByName:@"cbOpen" withObject:@{@"result":@"success"} andType:uexPluginCallbackWithJsonString inTarget:meBrwView];
+ *  @example [EUtility uexPlugin:@"uexDemo" callbackByName:@"cbOpen" withObject:@{@"result":@"success"} andType:uexPluginCallbackWithJsonString inTarget:cUexPluginCallbackInRootWindow];
+ *
+ *  @author  LiuKangli
+ *  @version 2015-09-23
+ */
++ (void)uexPlugin:(NSString *)pluginName callbackByName:(NSString *)functionName withObject:(id)obj andType:(uexPluginCallbackType)type inTarget:(id)target;
+
+
+
+/**
+ *
+ *  @method 获取插件的资源包实例
+ *
+ *
+ *  @param pluginName 插件名
+ *  @return 插件同名的资源文件对应的NSBundle实例
+ *
+ *  @example NSBundle * mePluginBundle = [EUtility bundleForPlugin:@"uexDemo"];
+ 
+ */
++ (NSBundle *)bundleForPlugin:(NSString *)pluginName;
+
+/**
+ *  获取插件的语言包实例
+ *
+ *  @param pluginName 插件名
+ *
+ *  @return 插件同名的语言资源包对应的NSBundle实例
+ */
++ (NSBundle *)languageBundleForPlugin:(NSString *)pluginName;
+
+/**
+ *  插件国际化
+ *
+ *  @param pluginName 插件名
+ *  @param key        插件bundle中Localizable.string里声明的字符串key
+ *  @param defaultValue 如果有传入第二个参数，即为defaultValue key匹配失败时会返回此值
+ *  @return key对应的国际化字符串
+ */
++ (NSString *)uexPlugin:(NSString *)pluginName localizedString:(NSString *)key,...;
+
++ (BOOL)isUseSystemLanguage;
+
++ (NSString *)getAppCanUserLanguage;
+
+/**
+ *  解析HTML颜色字符串获取UIColor
+ *
+ *  @param HTMLColor HTML颜色字符串 目前支持#xxx #yyyyyy #zzzzzzzz rgb(x,y,z) rgba(x,y,z,w)
+ *
+ *  @return 获取到的UIColor
+ *  @warning 如果解析失败，会返回nil;
+ */
++ (UIColor *)colorFromHTMLString:(NSString *)HTMLColor;
+
+
 + (NSString*)makeUrl:(NSString*)inBaseStr url:(NSString*)inUrl;
 + (NSURL*)stringToUrl:(NSString*)inString;
 + (BOOL)isValidateOrientation:(UIInterfaceOrientation)inOrientation;
@@ -31,16 +110,9 @@ void PluginLog(NSString *format, ...);
 + (void)brwView:(EBrowserView*)inBrwView addSubview:(UIView*)inSubView;
 //2015-5-6
 + (void)brwView:(EBrowserView*)inBrwView addSubviewToScrollView:(UIView*)inSubView;
++ (void)brwView:(EBrowserView*)inBrwView addSubviewToContainer:(UIView*)inSubView WithIndex:(NSInteger)index andIndentifier:(NSString *)identifier;
 
 + (void)brwView:(EBrowserView*)inBrwView evaluateScript:(NSString*)inScript;
-
-
-
-
-
-
-
-
 + (void)brwView:(EBrowserView*)inBrwView presentModalViewController:(UIViewController *)modalViewController animated:(BOOL)animated;
 + (BOOL)isIpad;
 + (NSString*)documentPath:(NSString*)inFileName;
@@ -77,4 +149,9 @@ void PluginLog(NSString *format, ...);
 //20140616 softToken
 +(NSString*)md5SoftToken;
 +(void)setRootViewGestureRecognizerEnabled:(BOOL)isEnable;
+
+
+
+
+
 @end

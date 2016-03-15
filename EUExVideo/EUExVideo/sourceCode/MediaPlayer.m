@@ -10,19 +10,28 @@
 #import "EUExVideo.h"
 #import "EUtility.h"
 #import "EUExBaseDefine.h"
-
+#import <ReactiveCocoa.framework/ReactiveCocoa.h>
 @interface MediaPlayer()
-
+@property (nonatomic,weak)EUExVideo *euexObj;
+@property (nonatomic,strong)MPMoviePlayerViewController *playerViewController;
+@property (nonatomic,strong)AVPlayerViewController *player;
+@property (nonatomic,assign)NSInteger startTime;
+@property (nonatomic,assign)CGFloat frequency;
 @end
 
 @implementation MediaPlayer
-//@synthesize euexObj;
-
--(void)initWithEuex:(EUExVideo *)euexObj_ startTime:(float)startTime frequency:(int)frequency{
-	euexObj = euexObj_;
-    _startTime=startTime;
-    _frequency=frequency;
+- (instancetype)initWithEuex:(EUExVideo *)euexObj startTime:(float)startTime frequency:(int)frequency
+{
+    self = [super init];
+    if (self) {
+        _euexObj = euexObj;
+        _startTime=startTime;
+        _frequency=frequency;
+    }
+    return self;
 }
+
+
 
 -(void)open:(NSString*)inPath{
 
@@ -33,7 +42,7 @@
 	}
 	else {
 		if (![[NSFileManager defaultManager] fileExistsAtPath:inPath]) {
-			[euexObj jsFailedWithOpId:0 errorCode:1210102 errorDes:UEX_ERROR_DESCRIBE_FILE_EXIST];
+			[self.euexObj jsFailedWithOpId:0 errorCode:1210102 errorDes:UEX_ERROR_DESCRIBE_FILE_EXIST];
 			return;
 		}
 		movieURL = [NSURL fileURLWithPath:inPath];
@@ -43,10 +52,11 @@
         self.player=[[AVPlayerViewController alloc]init];
         self.player.delegate=self;
         AVPlayer *movePlayer=[[AVPlayer alloc] initWithURL:movieURL];
-        CMTime startT=CMTimeMake(_startTime,1);
+        CMTime startT = CMTimeMake(_startTime,1);
         [movePlayer seekToTime:startT];
         self.player.player=movePlayer;
         [self.player.player play];
+        @weakify(self);
         [self.player.player addPeriodicTimeObserverForInterval:CMTimeMake(_frequency, 1) queue:NULL usingBlock:^(CMTime time){
             float playedTime=self.player.player.currentTime.value/self.player.player.currentTime.timescale;
             [euexObj uexVideoWithFunction:@"onPlayedWithTime" result:[@{@"playedTime":@(playedTime)} JSONFragment]];

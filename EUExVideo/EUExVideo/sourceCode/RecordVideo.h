@@ -9,15 +9,18 @@
 #import <Foundation/Foundation.h>
 
 @class EUExVideo;
-@interface RecordVideo : NSObject <UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
-	EUExVideo *euexObj;
-}
-//@property(nonatomic, retain)EUExVideo *euexObj;;
--(void)initWithEuex:(EUExVideo *)euexObj_;
+@interface RecordVideo : NSObject <UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+
+@property(nonatomic, weak)EUExVideo *euexObj;
+
+
+
+-(instancetype)initWithEuex:(EUExVideo *)euexObj;
+
 -(void)openVideoRecord:(float)maxDuration qualityType:(NSInteger)qualityType compressRatio:(float)compressRatio fileType:(NSString *)fileType;
 
-@property(nonatomic ,assign)float compressRatio;
+@property(nonatomic ,assign)CGFloat compressRatio;
 @property(nonatomic ,assign)NSInteger fileLength;
 @property(nonatomic ,assign)NSString *fileType;
-@property(nonatomic ,strong)AVAssetExportSession *session;
+//@property(nonatomic ,strong)AVAssetExportSession *session;
 @end

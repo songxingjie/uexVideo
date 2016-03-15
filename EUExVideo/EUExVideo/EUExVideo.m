@@ -10,6 +10,12 @@
 
 #import "EUtility.h"
 #import "EUExBaseDefine.h"
+#import "uexVideoRecorder.h"
+
+@interface EUExVideo()
+@property (nonatomic,strong)uexVideoRecorder *recorder;
+
+@end
 
 @implementation EUExVideo
 
@@ -20,15 +26,7 @@
 }
 
 -(void)dealloc{
-	if (rVideoObj) {
-		//[rVideoObj release];
-		rVideoObj = nil;
-	}
-    if (mPlayerObj) {
-		//[mPlayerObj release];
-		mPlayerObj = nil;
-	}
-	//[super dealloc];
+    [self clean];
 }
 
 -(void)open:(NSMutableArray *)inArguments {
@@ -55,31 +53,34 @@
 	}
 }
 
+
+
+
 -(void)record:(NSMutableArray *)inArguments {
-	rVideoObj = [[RecordVideo alloc] init];
-	[rVideoObj initWithEuex:self];
-    float maxDuration=0;
-    NSInteger qualityType=0;
-    float compressRatio=1;
-    NSString *fileType=@"MP4";
+    uexVideoRecorder *recorder = [[uexVideoRecorder alloc]initWithEUExVideo:self];
+
+
     if(inArguments.count>0){
-        id info=[inArguments[0] JSONValue];
+        id info = [inArguments[0] JSONValue];
         if([info objectForKey:@"maxDuration"]){
-            maxDuration=[[info objectForKey:@"maxDuration"] floatValue];
+            recorder.maxDuration = [[info objectForKey:@"maxDuration"] floatValue];
         }
-        if([info objectForKey:@"qualityType"]){
-            qualityType=[[info objectForKey:@"qualityType"] integerValue];
-        }
-        if([info objectForKey:@"compressRatio"]){
-            compressRatio=[[info objectForKey:@"compressRatio"] floatValue];
-        }
-        if([info objectForKey:@"fileType"]){
-            if ([[info objectForKey:@"fileType"] isEqual:@"MOV"]) {
-                fileType = @"MOV";
+        //if([info objectForKey:@"qualityType"]){
+        //    qualityType=[[info objectForKey:@"qualityType"] integerValue];
+        //}
+        //if([info objectForKey:@"compressRatio"]){
+        //    compressRatio=[[info objectForKey:@"compressRatio"] floatValue];
+        //}
+        if(info[@"fileType"] && [info[@"fileType"] isKindOfClass:[NSString class]]){
+            if ([[info[@"fileType"] lowercaseString] isEqual:@"mov"]) {
+                recorder.fileType = uexVideoRecorderOutputFileTypeMOV;
             }
         }
     }
-    [rVideoObj openVideoRecord:maxDuration qualityType:qualityType compressRatio:compressRatio fileType:fileType];
+    self.recorder = recorder;
+    [recorder statRecord];
+    
+    //[rVideoObj openVideoRecord:maxDuration qualityType:qualityType compressRatio:compressRatio fileType:fileType];
 }
 -(void)uexVideoWithOpId:(int)inOpId dataType:(int)inDataType data:(NSString *)inData{
 	if (inData) {
@@ -96,12 +97,12 @@
 }
 
 -(void)clean{
-	if (rVideoObj) {
-		rVideoObj = nil;
-	}
     if (mPlayerObj) {
 		mPlayerObj = nil;
 	}
+    if (self.recorder) {
+        self.recorder = nil;
+    }
 }
 
 @end
