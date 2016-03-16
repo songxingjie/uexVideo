@@ -36,12 +36,17 @@
 #pragma mark - private macro
 
 #define _UEX_VIDEO_BUNDLE ([EUtility bundleForPlugin:@"uexVideo"])
-#define _UEX_VIDEO_BUNDLE_IAMGE_PATH(name,ext) ([[_UEX_VIDEO_BUNDLE pathForResource:name ofType:ext])
+#define _UEX_VIDEO_BUNDLE_IAMGE_PATH(name,ext) ([_UEX_VIDEO_BUNDLE pathForResource:name ofType:ext])
 #define _UEX_VIDEO_IMAGE_NAMED(name) ([UIImage imageWithContentsOfFile:_UEX_VIDEO_BUNDLE_IAMGE_PATH(name,@"png")])
 
 
+extern NSString *const kUexVideoOrientationKey;
+extern NSString *const kUexVideoVolumeKey;
+
 @interface uexVideoHelper : NSObject
 
++ (NSString *)getSecretStringByKey:(NSString *)key;
 
++ (NSString *)stringFromSeconds:(NSInteger)seconds;
 
 @end

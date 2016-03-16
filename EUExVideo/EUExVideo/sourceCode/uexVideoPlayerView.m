@@ -22,7 +22,23 @@
  */
 
 #import "uexVideoPlayerView.h"
+#import "uexVideoPlayerMaskView.h"
+#import <AVFoundation/AVFoundation.h>
 
+@interface uexVideoPlayerView()
+@property (nonatomic,strong)AVPlayer *player;
+@property (nonatomic,strong)AVPlayerItem *playerItem;
+@property (nonatomic,strong)AVPlayerLayer *playerLayer;
+@end
 @implementation uexVideoPlayerView
+
+- (instancetype)initWithURL:(NSURL *)url startTime:(NSInteger)startSecons
+{
+    self = [super init];
+    if (self) {
+        <#statements#>
+    }
+    return self;
+}
 
 @end

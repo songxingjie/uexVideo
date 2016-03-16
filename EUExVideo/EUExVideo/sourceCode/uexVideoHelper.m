@@ -25,4 +25,9 @@
 
 @implementation uexVideoHelper
 
++ (NSString *)stringFromSeconds:(NSInteger)seconds{
+    NSString *min = [NSString stringWithFormat:@"%02ld",seconds / 60];
+    NSString *sec = [NSString stringWithFormat:@"%02ld",seconds % 60];
+    return [NSString stringWithFormat:@"%@:%@", min, sec];
+}
 @end

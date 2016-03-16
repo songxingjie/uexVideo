@@ -22,7 +22,31 @@
  */
 
 #import <Foundation/Foundation.h>
+@class uexVideoPlayerView;
+@interface uexVideoPlayerMaskView : UIView
 
-@interface uexVideoPlayerMaskView : NSObject
+@property (nonatomic,strong)RACSignal *playButtonSignal;
+@property (nonatomic,strong)RACSignal *fullScreenButtonSignal;
+@property (nonatomic,strong)RACSignal *progressSliderSignal;
+
+
+
+
+
+
+
+
+
+
+- (instancetype)initWithPlayerView:(uexVideoPlayerView *)playerView;
+
+- (void)setFullScreenHidden:(BOOL)isHidden;
+
+- (void)setProgress:(CGFloat)progress;
+- (void)setShowViewSignal:(RACSignal *)signal;
 
 @end
+
+
+
+

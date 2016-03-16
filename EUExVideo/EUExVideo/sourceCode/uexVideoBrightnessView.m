@@ -25,6 +25,9 @@
 
 @interface uexVideoBrightnessView()
 @property (nonatomic,strong)UIView *progressView;
+@property (nonatomic,strong)NSMutableArray<UIView *> *progressDots;
+@property (nonatomic,strong)UIImageView *backgroundView;
+@property (nonatomic,strong)UILabel *titleLabel;
 @property (nonatomic,assign)BOOL isEnabled;
 @end
 
@@ -51,15 +54,111 @@
         self.layer.cornerRadius = 10;
         self.layer.masksToBounds = YES;
         
+        UIImageView *backgroundView = [[UIImageView alloc]initWithImage:UEX_VIDEO_IMAGE_NAMED(@"brightness")];
+        [self addSubview:backgroundView];
+        @weakify(self);
+        [backgroundView mas_updateConstraints:^(MASConstraintMaker *make) {
+            @strongify(self);
+            make.height.equalTo(@120);
+            make.width.equalTo(@120);
+            make.top.equalTo(self.mas_top);
+            make.centerX.equalTo(self.mas_centerX);
+        }];
+        _backgroundView = backgroundView;
+        
+        
+        UIView *progressView = [UIView new];
+        _progressDots = [NSMutableArray array];
+        static NSInteger kTotalDotsCount = 18;
+        for(int i = 0;i < kTotalDotsCount;i++){
+            UIView *dotView = [UIView new];
+            dotView.backgroundColor = [UIColor whiteColor];
+            [progressView addSubview:dotView];
+            @weakify(progressView);
+            [dotView mas_updateConstraints:^(MASConstraintMaker *make) {
+                @strongify(progressView);
+                make.top.equalTo(progressView.mas_top);
+                make.bottom.equalTo(progressView.mas_bottom);
+                make.width.equalTo(@4);
+                make.left.equalTo(progressView.mas_left).with.offset(5 * i + 1);
+            }];
+            [_progressDots addObject:dotView];
+        }
+        progressView.backgroundColor = [EUtility colorFromHTMLString:@"#403835"];
+        [self addSubview:progressView];
+        [progressView mas_updateConstraints:^(MASConstraintMaker *make) {
+            @strongify(self);
+            make.width.equalTo(@(5 * kTotalDotsCount + 1));
+            make.height.equalTo(@4);
+            make.top.equalTo(self.mas_top).with.offset(130);
+            make.centerX.equalTo(self.mas_centerX);
+            
+        }];
+        _progressView = progressView;
+        
+        
+        UILabel *titleLabel = [[UILabel alloc]init];
+        titleLabel.text = @"亮度";
+        titleLabel.textColor = [EUtility colorFromHTMLString:@"#403835"];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.font = [UIFont systemFontOfSize:16];
+        [self addSubview:titleLabel];
+        [titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.mas_centerX);
+            make.top.equalTo(self.mas_top).with.offset(30);
+        }];
+        _titleLabel = titleLabel;
+        
         
         UIWindow *window = [UIApplication sharedApplication].keyWindow;
         [window addSubview:self];
         [self mas_updateConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(window);
+            make.width.equalTo(@160);
+            make.height.equalTo(@160);
             
         }];
+        [self hide];
+        [self disable];
+        RACSignal *signal = [RACObserve([UIScreen mainScreen], brightness) distinctUntilChanged];
+        [signal subscribeNext:^(NSNumber *x) {
+            if(!self.isEnabled){
+                return;
+            }
+            self.alpha = 1;
+            CGFloat progress = [x floatValue];
+            NSInteger dotCount = progress / kTotalDotsCount ;
+            for (NSInteger i = 0;i < self.progressDots.count ; i++) {
+                UIView *view = self.progressDots[i];
+                if (i <= dotCount) {
+                    view.hidden = NO;
+                }else{
+                    view.hidden = YES;
+                }
+            }
+        }];
+        [[signal throttle:3.0] subscribeNext:^(id x) {
+            if(!self.isEnabled){
+                return;
+            }
+            if (self.alpha == 1) {
+                [UIView animateWithDuration:0.8 animations:^{
+                    self.alpha = 0;
+                }];
+            }
+        }];
+
     }
     return self;
+}
+
+
+
+
+
+
+- (void)hide{
+    self.alpha = 0;
 }
 
 - (void)enable{

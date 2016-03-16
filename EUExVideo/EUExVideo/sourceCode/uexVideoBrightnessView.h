@@ -30,7 +30,7 @@
 
 - (void)enable;
 - (void)disable;
-
+- (void)hide;
 
 
 @end

@@ -23,6 +23,17 @@
 
 #import <Foundation/Foundation.h>
 
-@interface uexVideoPlayerView : NSObject
+@interface uexVideoPlayerView : UIView
+
+@property (nonatomic,assign,readonly)BOOL isFullScreen;
+@property (nonatomic,assign,readonly)BOOL isPlaying;
+@property (nonatomic,assign,readonly)CGFloat duration;
+//@property (nonatomic,assign,readonly)CGFloat bufferedDuration; 暂时木有用
+
+- (instancetype)initWithURL:(NSURL *)url startTime:(NSInteger)startSecons;
+
+- (void)play;
+- (void)setCloseButtonHidden:(BOOL)isHidden;
+- (void)forceFullScreen;
 
 @end
