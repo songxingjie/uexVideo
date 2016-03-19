@@ -23,17 +23,52 @@
 
 #import <Foundation/Foundation.h>
 
+
+@protocol uexVideoPlayerViewDelegate;
+
+typedef  NS_ENUM(NSInteger,uexVideoPlayerViewStatus){
+    uexVideoPlayerViewStatusPaused = 0,
+    uexVideoPlayerViewStatusBuffering,
+    uexVideoPlayerViewStatusPlaying,
+    uexVideoPlayerViewStatusFailed
+};
+
 @interface uexVideoPlayerView : UIView
 
-@property (nonatomic,assign,readonly)BOOL isFullScreen;
-@property (nonatomic,assign,readonly)BOOL isPlaying;
-@property (nonatomic,assign,readonly)CGFloat duration;
-//@property (nonatomic,assign,readonly)CGFloat bufferedDuration; 暂时木有用
+//以下这些只读参数都可用于KVO
+@property (nonatomic,assign,readonly)BOOL isFullScreen;//当前是否是全屏模式
+@property (nonatomic,assign,readonly)BOOL isPlaying;//当前是否正在播放
+@property (nonatomic,assign,readonly)CGFloat currentTime;//当前播放时间
+@property (nonatomic,assign,readonly)CGFloat duration;//总播放时长
+@property (nonatomic,assign,readonly)CGFloat bufferedDuration;//已缓冲时长
+@property (nonatomic,assign,readonly)uexVideoPlayerViewStatus status;//当前状态
 
-- (instancetype)initWithURL:(NSURL *)url startTime:(NSInteger)startSecons;
 
-- (void)play;
+@property (nonatomic,weak)id<uexVideoPlayerViewDelegate> delegate;
+
+
+
+
+- (instancetype)initWithFrame:(CGRect)frame URL:(NSURL *)url;
+
+- (void)seekToTime:(CGFloat)time;
 - (void)setCloseButtonHidden:(BOOL)isHidden;
-- (void)forceFullScreen;
+- (void)setFullScreenBottonHidden:(BOOL)isHidden;
+- (void)forceFullScreen;//进入全屏并且隐藏缩放按钮
+- (void)playWhenPrepared;//执行此方法后player会在准备完毕之时立即开始播放；
+- (void)pause;
 
 @end
+
+@protocol uexVideoPlayerViewDelegate <NSObject>
+@optional
+
+//通过此回调处理关闭按钮的点击事件
+- (void)playViewCloseButtonDidClick:(uexVideoPlayerView *)playerView;
+//进入全屏之后应该禁用AutoRotate 隐藏Status Bar，这些需要rootViewController去处理。
+//在下面2个回调中处理这些事情!
+- (void)playerViewDidEnterFullScreen:(uexVideoPlayerView *)playerView;
+- (void)playerViewWillExitFullScreen:(uexVideoPlayerView *)playerView;
+@end
+
+

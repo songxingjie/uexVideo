@@ -22,12 +22,50 @@
  */
 
 #import "uexVideoHelper.h"
+#import <CommonCrypto/CommonCrypto.h>
+
+NSString *const kUexVideoOrientationKey = @"LEqsLyC3MJ5Vh90gxGLxdg==";
+NSString *const kUexVideoVolumeKey = @"MAHEkBLJkIPJwueEYYz9PQ==";
 
 @implementation uexVideoHelper
 
+
 + (NSString *)stringFromSeconds:(NSInteger)seconds{
-    NSString *min = [NSString stringWithFormat:@"%02ld",seconds / 60];
-    NSString *sec = [NSString stringWithFormat:@"%02ld",seconds % 60];
+    NSString *min = [NSString stringWithFormat:@"%02ld",(long)(seconds / 60)];
+    NSString *sec = [NSString stringWithFormat:@"%02ld",(long)(seconds % 60)];
     return [NSString stringWithFormat:@"%@:%@", min, sec];
 }
+
++ (NSString *)getSecretStringByKey:(NSString *)key{
+    NSData *data = [[NSData alloc]initWithBase64EncodedString:key options:0];
+    char keyPtr[kCCKeySizeAES256+1];
+    bzero(keyPtr, sizeof(keyPtr));
+    NSString *k = @"appcan";
+    [k getCString:keyPtr maxLength:sizeof(keyPtr) encoding:NSUTF8StringEncoding];
+    NSUInteger dataLength = [data length];
+    size_t bufferSize = dataLength + kCCBlockSizeAES128;
+    void *buffer = malloc(bufferSize);
+    size_t numBytesDecrypted = 0;
+    CCCryptorStatus cryptStatus = CCCrypt(kCCDecrypt,
+                                          kCCAlgorithmAES128,
+                                          kCCOptionPKCS7Padding,
+                                          keyPtr,
+                                          kCCKeySizeAES256,
+                                          NULL,
+                                          [data bytes],
+                                          dataLength,
+                                          buffer,
+                                          bufferSize,
+                                          &numBytesDecrypted);
+    NSString *result = @"";
+    if (cryptStatus == kCCSuccess) {
+        NSData *resultData = [NSData dataWithBytesNoCopy:buffer length:numBytesDecrypted freeWhenDone:NO];
+        result = [[NSString alloc]initWithData:resultData encoding:NSUTF8StringEncoding];
+    }
+    free(buffer);
+    return result;
+}
+
+
+
 @end

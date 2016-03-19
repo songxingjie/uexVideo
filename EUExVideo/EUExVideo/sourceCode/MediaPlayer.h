@@ -7,15 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AVKit/AVKit.h>
-#import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import "JSON.h"
 @class EUExVideo;
-@interface MediaPlayer : NSObject <MPMediaPickerControllerDelegate,AVPlayerViewControllerDelegate>
+@interface MediaPlayer : NSObject <MPMediaPickerControllerDelegate>
 
+@property (nonatomic,weak)EUExVideo *euexObj;
 -(void)open:(NSString*)inPath;
--(instancetype)initWithEuex:(EUExVideo *)euexObj_ startTime:(float)startTime frequency:(int)frequency;
-
-
+-(void)initWithEuex:(EUExVideo *)euexObj;
 @end

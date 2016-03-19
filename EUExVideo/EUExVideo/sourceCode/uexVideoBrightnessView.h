@@ -23,6 +23,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define UEX_VIDEO_BRIGHTNESS_VIEW [uexVideoBrightnessView sharedView]
+
 @interface uexVideoBrightnessView : UIView
 
 

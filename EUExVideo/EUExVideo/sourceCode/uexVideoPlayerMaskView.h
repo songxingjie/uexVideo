@@ -25,25 +25,17 @@
 @class uexVideoPlayerView;
 @interface uexVideoPlayerMaskView : UIView
 
-@property (nonatomic,strong)RACSignal *playButtonSignal;
-@property (nonatomic,strong)RACSignal *fullScreenButtonSignal;
-@property (nonatomic,strong)RACSignal *progressSliderSignal;
-
-
-
-
-
-
-
-
-
+//以下signal均没有side effects
+@property (nonatomic,strong)RACSignal *playButtonClickSignal;//play按钮点击事件
+@property (nonatomic,strong)RACSignal *fullScreenButtonClickSignal;//全屏按钮点击事件
+@property (nonatomic,strong)RACSignal *progressSliderValueChangeSignal;//slider滑动中progress的变化
+@property (nonatomic,strong)RACSignal *progressSliderStartDraggingSignal;//slider的滑动事件 当开始滑动时sendNext:@YES ,结束滑动时sendNext:@NO
 
 - (instancetype)initWithPlayerView:(uexVideoPlayerView *)playerView;
 
-- (void)setFullScreenHidden:(BOOL)isHidden;
-
-- (void)setProgress:(CGFloat)progress;
+- (void)setFullScreenButtonHidden:(BOOL)isHidden;
 - (void)setShowViewSignal:(RACSignal *)signal;
+
 
 @end
 

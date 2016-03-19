@@ -1,3 +1,4 @@
+
 //
 //  mediaPlayer.m
 //  WebKitCorePlam
@@ -10,60 +11,71 @@
 #import "EUExVideo.h"
 #import "EUtility.h"
 #import "EUExBaseDefine.h"
-#import <ReactiveCocoa.framework/ReactiveCocoa.h>
-@interface MediaPlayer()
-@property (nonatomic,weak)EUExVideo *euexObj;
-@property (nonatomic,strong)MPMoviePlayerViewController *playerViewController;
-@property (nonatomic,strong)AVPlayerViewController *player;
-@property (nonatomic,assign)NSInteger startTime;
-@property (nonatomic,assign)CGFloat frequency;
-@end
 
 @implementation MediaPlayer
-- (instancetype)initWithEuex:(EUExVideo *)euexObj startTime:(float)startTime frequency:(int)frequency
-{
-    self = [super init];
-    if (self) {
-        _euexObj = euexObj;
-        _startTime=startTime;
-        _frequency=frequency;
-    }
-    return self;
+
+-(void)initWithEuex:(EUExVideo *)euexObj{
+    _euexObj = euexObj;
 }
-
-
 
 -(void)open:(NSString*)inPath{
-
-	NSURL *movieURL = nil;
-	if ([inPath hasPrefix:@"http:"]) {// || [moviePath hasPrefix:@"rtsp:"]) {
+    
+    NSURL *movieURL = nil;
+    if ([inPath hasPrefix:@"http:"]) {
         inPath = [inPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-		movieURL = [NSURL URLWithString:inPath];
-	}
-	else {
-		if (![[NSFileManager defaultManager] fileExistsAtPath:inPath]) {
-			[self.euexObj jsFailedWithOpId:0 errorCode:1210102 errorDes:UEX_ERROR_DESCRIBE_FILE_EXIST];
-			return;
-		}
-		movieURL = [NSURL fileURLWithPath:inPath];
-	}
-	if (movieURL&&[movieURL scheme])
-	{
-        self.player=[[AVPlayerViewController alloc]init];
-        self.player.delegate=self;
-        AVPlayer *movePlayer=[[AVPlayer alloc] initWithURL:movieURL];
-        CMTime startT = CMTimeMake(_startTime,1);
-        [movePlayer seekToTime:startT];
-        self.player.player=movePlayer;
-        [self.player.player play];
-        @weakify(self);
-        [self.player.player addPeriodicTimeObserverForInterval:CMTimeMake(_frequency, 1) queue:NULL usingBlock:^(CMTime time){
-            float playedTime=self.player.player.currentTime.value/self.player.player.currentTime.timescale;
-            [euexObj uexVideoWithFunction:@"onPlayedWithTime" result:[@{@"playedTime":@(playedTime)} JSONFragment]];
-        }];
-        [EUtility brwView:euexObj.meBrwView presentModalViewController:self.player animated:YES];
-	}else{
-		[euexObj jsFailedWithOpId:0 errorCode:1210103 errorDes:UEX_ERROR_DESCRIBE_FILE_FORMAT];
-	}
+        movieURL = [NSURL URLWithString:inPath];
+    }
+    else {
+        if (![[NSFileManager defaultManager] fileExistsAtPath:inPath]) {
+            [_euexObj jsFailedWithOpId:0 errorCode:1210102 errorDes:UEX_ERROR_DESCRIBE_FILE_EXIST];
+            return;
+        }
+        movieURL = [NSURL fileURLWithPath:inPath];
+    }
+    if (movieURL&&[movieURL scheme])
+    {
+        PluginLog(@"movie start");
+        if ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 3.2){
+            PluginLog(@"verson >3.2");
+            MPMoviePlayerViewController *playerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:movieURL];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(myMovieViewFinishedCallback:)
+                                                         name:MPMoviePlayerPlaybackDidFinishNotification
+                                                       object:playerViewController];
+            
+            [playerViewController.moviePlayer prepareToPlay];
+            [playerViewController.moviePlayer play];
+            [playerViewController.moviePlayer setFullscreen:YES];
+            [EUtility brwView:_euexObj.meBrwView presentModalViewController:playerViewController animated:YES];
+            //[playerViewController release];
+        }else {
+            //如果系统版本在4.0以前，用下面这个
+            MPMoviePlayerController *MPPlayer = [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
+            MPPlayer.scalingMode = MPMovieScalingModeAspectFill;
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(myMovieFinishedCallback:)
+                                                         name:MPMoviePlayerPlaybackDidFinishNotification
+                                                       object:MPPlayer];
+            [MPPlayer play];
+        }
+    }else{
+        [_euexObj jsFailedWithOpId:0 errorCode:1210103 errorDes:UEX_ERROR_DESCRIBE_FILE_FORMAT];
+    }
 }
+
+-(void)myMovieFinishedCallback:(NSNotification*)aNotification
+{
+
+    MPMoviePlayerController* theMovie=[aNotification object];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:theMovie];
+
+}
+-(void)myMovieViewFinishedCallback:(NSNotification*)aNotification {
+
+    MPMoviePlayerViewController* theMovieView=[aNotification object];
+    [theMovieView dismissMoviePlayerViewControllerAnimated];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:theMovieView];
+
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:YES];
+}
+
 @end

@@ -34,6 +34,8 @@
 		42A6E5291C97F3F3004F8765 /* uexVideoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 42A6E5281C97F3F3004F8765 /* uexVideoHelper.m */; };
 		42A6E52C1C97F7D4004F8765 /* brightness@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 42A6E52A1C97F7D4004F8765 /* brightness@2x.png */; };
 		42A6E52D1C97F7D4004F8765 /* brightness@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 42A6E52B1C97F7D4004F8765 /* brightness@3x.png */; };
+		42BA31E21C9CF3A00011CEB8 /* ReactiveCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 42A6E4E41C96699E004F8765 /* ReactiveCocoa.framework */; };
+		42BA31E31C9CF3A40011CEB8 /* Masonry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 42A6E50F1C97D41D004F8765 /* Masonry.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,9 +52,11 @@
 		03442C7C18B2338100CEC18D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
+			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				42BA31E31C9CF3A40011CEB8 /* Masonry.framework in CopyFiles */,
+				42BA31E21C9CF3A00011CEB8 /* ReactiveCocoa.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +114,8 @@
 		42A6E5281C97F3F3004F8765 /* uexVideoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uexVideoHelper.m; sourceTree = "<group>"; };
 		42A6E52A1C97F7D4004F8765 /* brightness@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brightness@2x.png"; sourceTree = "<group>"; };
 		42A6E52B1C97F7D4004F8765 /* brightness@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brightness@3x.png"; sourceTree = "<group>"; };
+		42BA31C11C9BF2320011CEB8 /* WidgetOneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetOneDelegate.h; sourceTree = "<group>"; };
+		42BA31C21C9BF2610011CEB8 /* ACEBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACEBaseViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +192,8 @@
 		03442CA718B233D700CEC18D /* engineHeader */ = {
 			isa = PBXGroup;
 			children = (
+				42BA31C11C9BF2320011CEB8 /* WidgetOneDelegate.h */,
+				42BA31C21C9BF2610011CEB8 /* ACEBaseViewController.h */,
 				03442CA818B233D700CEC18D /* EUExBase.h */,
 				03442CA918B233D700CEC18D /* EUExBaseDefine.h */,
 				03442CAA18B233D700CEC18D /* EUtility.h */,

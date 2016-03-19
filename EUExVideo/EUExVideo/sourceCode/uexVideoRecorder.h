@@ -25,10 +25,17 @@
 @class EUExVideo;
 
 typedef NS_ENUM(NSInteger,uexVideoRecorderResolution) {
-    uexVideoRecorderResolutionCustom = 0,
-    uexVideoRecorderResolution640x480,
+    uexVideoRecorderResolution1920x1080 = 0,
     uexVideoRecorderResolution1280x720,
-    uexVideoRecorderResolution1920x1080,
+    uexVideoRecorderResolution640x480,
+    
+    
+};
+
+typedef NS_ENUM(NSInteger,uexVideoRecorderBitRateLevel) {
+    uexVideoRecorderBitRateLevelHigh = 0,
+    uexVideoRecorderBitRateLevelMedium,
+    uexVideoRecorderBitRateLevelLow,
 };
 
 typedef NS_ENUM(NSInteger,uexVideoRecorderOutputFileType) {
@@ -39,15 +46,12 @@ typedef NS_ENUM(NSInteger,uexVideoRecorderOutputFileType) {
 @interface uexVideoRecorder : NSObject
 @property (nonatomic,assign)NSTimeInterval maxDuration;
 @property (nonatomic,assign)uexVideoRecorderResolution resolution;
-@property (nonatomic,assign)CGFloat outputWidth;
-@property (nonatomic,assign)CGFloat outputHeight;
-@property (nonatomic,assign)CGFloat bitRateMultipier; //采样率为 outputWidth * outputHeight * bitRateMultipier
 @property (nonatomic,assign)uexVideoRecorderOutputFileType fileType;
-extern CGFloat uexVideoRecorderDefaultBitRateMultipier;//默认为 5.0
+@property (nonatomic,assign)uexVideoRecorderBitRateLevel bitRateLevel;
+
 
 
 - (instancetype)initWithEUExVideo:(EUExVideo *)euexObj;
-
 - (void)statRecord;
 
 @end

@@ -28,64 +28,117 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "JSON.h"
 #import "EUExBaseDefine.h"
-@interface uexVideoMediaPlayer()<MPMediaPickerControllerDelegate>
-@property (nonatomic,assign) NSInteger startTime;
-@property (nonatomic,assign) CGFloat frequency;
-@property (nonatomic,strong) MPMoviePlayerViewController *playerViewController;
+#import "uexVideoPlayerView.h"
+#import "WidgetOneDelegate.h"
+#import "ACEBaseViewController.h"
+@interface uexVideoMediaPlayer()<uexVideoPlayerViewDelegate>
 @property (nonatomic,weak) EUExVideo *euexObj;
+@property (nonatomic,strong)RACDisposable *VCConfig;
+@property (nonatomic,strong)uexVideoPlayerView *playerView;
+@property (nonatomic,strong)NSString *inPath;
 @end
 @implementation uexVideoMediaPlayer
 
-- (instancetype)initWithEuex:(EUExVideo *)euexObj startTime:(NSInteger)startTime frequency:(CGFloat)frequency
+- (instancetype)initWithEUExVideo:(EUExVideo *)euexObj
 {
     self = [super init];
     if (self) {
         _euexObj = euexObj;
-        _startTime = startTime;
-        _frequency = frequency;
     }
     return self;
 }
 
-- (void)open:(NSString *)inPath{
+- (void)openWithFrame:(CGRect)frame path:(NSString *)inPath startTime:(CGFloat)startTime {
+    
     inPath = [inPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    self.inPath = inPath;
     NSURL *movieURL = nil;
     if ([inPath.lowercaseString hasPrefix:@"http://"] || [inPath.lowercaseString hasPrefix:@"https://"]) {
         movieURL = [NSURL URLWithString:inPath];
     }
     else {
-        if (![[NSFileManager defaultManager] fileExistsAtPath:inPath]) {
-            [self.euexObj jsFailedWithOpId:0 errorCode:1210102 errorDes:UEX_ERROR_DESCRIBE_FILE_EXIST];
-            return;
-        }
         movieURL = [NSURL fileURLWithPath:inPath];
     }
-    if (!movieURL || ![movieURL scheme]){
-         [self.euexObj jsFailedWithOpId:0 errorCode:1210103 errorDes:UEX_ERROR_DESCRIBE_FILE_FORMAT];
+    if (self.playerView) {
+        [self close];
+    }
+    self.playerView = [[uexVideoPlayerView alloc]initWithFrame:CGRectMake(50, 300, 360, 240) URL:movieURL];
+    self.playerView.delegate = self;
+   
+    [[self rac_signalForSelector:@selector(playerViewDidEnterFullScreen:) fromProtocol:@protocol(uexVideoPlayerViewDelegate)]subscribeNext:^(id x) {
+        [self resetConfig];
+        __kindof ACEBaseViewController *VC = (__kindof ACEBaseViewController *)theApp.drawerController;
+        if (![VC respondsToSelector:@selector(canAutorotate)] || ![VC respondsToSelector:@selector(isStatusBarHidden)]) {
+            return;
+        }
+        BOOL canAutoRotate = VC.canAutorotate;
+        BOOL isStatusBarHidden = VC.isStatusBarHidden;
+        VC.canAutorotate = NO;
+        VC.isStatusBarHidden = YES;
+        [VC setNeedsStatusBarAppearanceUpdate];
+        self.VCConfig = [RACDisposable disposableWithBlock:^{
+            VC.canAutorotate = canAutoRotate;
+            VC.isStatusBarHidden = isStatusBarHidden;
+            [VC setNeedsStatusBarAppearanceUpdate];
+        }];
+    }];
+    [[self rac_signalForSelector:@selector(playerViewWillExitFullScreen:) fromProtocol:@protocol(uexVideoPlayerViewDelegate)]subscribeNext:^(id x) {
+        [self resetConfig];
+    }];
+    [[self rac_signalForSelector:@selector(playViewCloseButtonDidClick:) fromProtocol:@protocol(uexVideoPlayerViewDelegate)]subscribeNext:^(id x) {
+        [self close];
+    }];
+    [[self rac_willDeallocSignal]subscribeCompleted:^{
+        [self resetConfig];
+    }];
+
+    [self.playerView setFullScreenBottonHidden:!self.showScaleButton];
+    [self.playerView setCloseButtonHidden:!self.showCloseButton];
+    
+    if (self.isScrollWithWeb) {
+        [EUtility brwView:self.euexObj.meBrwView addSubviewToScrollView:self.playerView];
+    }else{
+        [EUtility brwView:self.euexObj.meBrwView addSubview:self.playerView];
+    }
+    if (self.forceFullScreen) {
+        [self.playerView forceFullScreen];
+    }
+    [self.playerView seekToTime:startTime];
+    if (self.autoStart) {
+        [self.playerView playWhenPrepared];
+    }
+     @weakify(self);
+    [RACObserve(self.playerView, status).distinctUntilChanged subscribeNext:^(id x) {
+        @strongify(self);
+        [self.euexObj callbackJSONWithName:@"onPlayerStatusChange" object:@{
+                                                                            @"status":x
+                                                                            }];
+    }];
+}
+
+- (void)resetConfig{
+    if (self.VCConfig) {
+        [self.VCConfig dispose];
+        self.VCConfig = nil;
+    }
+}
+
+- (void)close{
+    if(!self.playerView){
         return;
     }
-    [AVPlayer playerWithURL:<#(nonnull NSURL *)#>]
-    
-    self.playerViewController = [[MPMoviePlayerViewController alloc]initWithContentURL:movieURL];
-    
-   /*
-    
-        self.player=[[AVPlayerViewController alloc]init];
-        self.player.delegate=self;
-        AVPlayer *movePlayer=[[AVPlayer alloc] initWithURL:movieURL];
-        CMTime startT = CMTimeMake(_startTime,1);
-        [movePlayer seekToTime:startT];
-        self.player.player=movePlayer;
-        [self.player.player play];
-        @weakify(self);
-        [self.player.player addPeriodicTimeObserverForInterval:CMTimeMake(_frequency, 1) queue:NULL usingBlock:^(CMTime time){
-            float playedTime = self.player.player.currentTime.value/self.player.player.currentTime.timescale;
-            [euexObj uexVideoWithFunction:@"onPlayedWithTime" result:[@{@"playedTime":@(playedTime)} JSONFragment]];
-        }];
-        [EUtility brwView:euexObj.meBrwView presentModalViewController:self.player animated:YES];
-    
-    */
+    [self.playerView pause];
+    [self.euexObj callbackJSONWithName:@"onPlayerClose" object:@{
+                                                                 @"src":self.inPath,
+                                                                 @"currentTime":@(self.playerView.currentTime)
+                                                                 }];
+    [self.playerView removeFromSuperview];
+    [self resetConfig];
+    self.playerView = nil;
+    self.inPath = nil;
     
 }
+
+
 
 @end

@@ -27,25 +27,25 @@
 #import "EUtility.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 @interface uexVideoRecorder()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@property (nonatomic,assign)CGFloat outputWidth;
+@property (nonatomic,assign)CGFloat outputHeight;
 @property (nonatomic,weak)EUExVideo *euexObj;
+@property (nonatomic,strong)uexVideoAssetExporter *exporter;
+
 @end;
 
 @implementation uexVideoRecorder
 
-
-CGFloat uexVideoRecorderDefaultBitRateMultipier = 5.0;
 
 - (instancetype)initWithEUExVideo:(EUExVideo *)euexObj{
     self = [super init];
     if (self) {
         _euexObj = euexObj;
         _fileType = uexVideoRecorderOutputFileTypeMP4;
-        _bitRateMultipier = uexVideoRecorderDefaultBitRateMultipier;
         _outputWidth = 1920;
         _outputHeight = 1080;
-        
-        _resolution = uexVideoRecorderResolution1280x720;
-        _bitRateMultipier = 2;
+        _resolution = uexVideoRecorderResolution1920x1080;
+        _bitRateLevel = uexVideoRecorderBitRateLevelHigh;
     }
     return self;
 }
@@ -91,10 +91,6 @@ CGFloat uexVideoRecorderDefaultBitRateMultipier = 5.0;
     picker.mediaTypes = @[(NSString *)kUTTypeMovie];
     picker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     switch (self.resolution) {
-        case uexVideoRecorderResolutionCustom: {
-            picker.videoQuality = UIImagePickerControllerQualityTypeHigh;
-            break;
-        }
         case uexVideoRecorderResolution640x480: {
             picker.videoQuality = UIImagePickerControllerQualityType640x480;
             self.outputWidth = 640;
@@ -136,6 +132,9 @@ CGFloat uexVideoRecorderDefaultBitRateMultipier = 5.0;
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
     dispatch_async(dispatch_get_main_queue(), ^{
         [picker dismissViewControllerAnimated:YES completion:^{
+            [self.euexObj callbackJSONWithName:@"onRecordFinish" object:@{
+                                                                          @"result":@(1),
+                                                                          }];
         }];
     });
 }
@@ -160,6 +159,8 @@ CGFloat uexVideoRecorderDefaultBitRateMultipier = 5.0;
         return;
     }
     uexVideoAssetExporter *exporter = [[uexVideoAssetExporter alloc]initWithAsset:asset];
+    [self resetExporter];
+    self.exporter = exporter;
     switch (self.fileType) {
         case uexVideoRecorderOutputFileTypeMP4: {
             exporter.outputFileType = AVFileTypeMPEG4;
@@ -176,7 +177,7 @@ CGFloat uexVideoRecorderDefaultBitRateMultipier = 5.0;
                                AVVideoWidthKey: @(self.outputWidth),
                                AVVideoHeightKey: @(self.outputHeight),
                                AVVideoCompressionPropertiesKey: @{
-                                       AVVideoAverageBitRateKey: @(self.outputWidth * self.outputHeight * self.bitRateMultipier),
+                                       AVVideoAverageBitRateKey: [self bitRateDict][@(self.resolution)][@(self.bitRateLevel)] ?: @(5000000),
                                        AVVideoProfileLevelKey: AVVideoProfileLevelH264High40,
                                        },
                                };
@@ -189,10 +190,15 @@ CGFloat uexVideoRecorderDefaultBitRateMultipier = 5.0;
     NSString *savePath = [self makeSavePath];
     exporter.outputURL = [NSURL fileURLWithPath:savePath];
     [exporter.startExportSignal subscribeNext:^(NSNumber *progress) {
-        NSLog(@"%@",progress);
+        [self.euexObj callbackJSONWithName:@"onExportWithProgress" object:progress];
     } error:^(NSError *error) {
         NSLog(@"%@",error.localizedDescription);
+        [self.euexObj callbackJSONWithName:@"onRecordFinish" object:@{
+                                                                      @"result":@(2),
+                                                                      @"errorStr":error.localizedDescription
+                                                                      }];
     } completed:^{
+        /*
         CGFloat fileSize = -1.0;
         if ([[NSFileManager defaultManager] fileExistsAtPath:savePath]) {
             NSDictionary *fileDic = [[NSFileManager defaultManager] attributesOfItemAtPath:savePath error:nil];
@@ -200,9 +206,43 @@ CGFloat uexVideoRecorderDefaultBitRateMultipier = 5.0;
             fileSize = 1.0*size/1024;
         }
         NSLog(@"complete! fileSize : %@",@(fileSize));
+         */
         [self.euexObj uexVideoWithOpId:0 dataType:0 data:savePath];
+        [self.euexObj callbackJSONWithName:@"onRecordFinish" object:@{
+                                                                      @"result":@(0),
+                                                                      @"path":savePath
+                                                                      }];
     }];
 }
 
+- (NSDictionary *)bitRateDict{
+    return @{
+             @(uexVideoRecorderResolution1920x1080):@{
+                     @(uexVideoRecorderBitRateLevelHigh):@8000000,
+                     @(uexVideoRecorderBitRateLevelMedium):@5600000,
+                     @(uexVideoRecorderBitRateLevelLow):@2400000,
+                     },
+             @(uexVideoRecorderResolution1280x720):@{
+                     @(uexVideoRecorderBitRateLevelHigh):@5000000,
+                     @(uexVideoRecorderBitRateLevelMedium):@3500000,
+                     @(uexVideoRecorderBitRateLevelLow):@1500000,
+                     },
+             @(uexVideoRecorderResolution640x480):@{
+                     @(uexVideoRecorderBitRateLevelHigh):@2500000,
+                     @(uexVideoRecorderBitRateLevelMedium):@1750000,
+                     @(uexVideoRecorderBitRateLevelLow):@750000,
+                     },
+             };
+}
+- (void)resetExporter{
+    if (self.exporter) {
+        [self.exporter cancel];
+        self.exporter = nil;
+    }
+}
+
+- (void)dealloc{
+    [self resetExporter];
+}
 
 @end

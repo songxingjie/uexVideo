@@ -54,16 +54,18 @@
 - (instancetype)initWithPlayerView:(uexVideoPlayerView *)playerView{
     self = [super init];
     if (self) {
+        self.userInteractionEnabled = YES;
         _player = playerView;
         [self setupBackgroundUI];
         [self setupPlayButton];
         [self setupFullScreenButton];
+        [self setupLabel];
         [self setupProgressSlider];
     }
     return self;
 }
 
-- (void)setFullScreenHidden:(BOOL)isHidden{
+- (void)setFullScreenButtonHidden:(BOOL)isHidden{
     self.fullScreenButton.hidden = isHidden;
 }
 
@@ -73,9 +75,9 @@
 
 - (void)setShowViewSignal:(RACSignal *)signal{
     NSMutableArray *signals = [NSMutableArray array];
-    [signals addObject:self.playButtonSignal];
-    [signals addObject:self.progressSliderSignal];
-    [signals addObject:self.fullScreenButtonSignal];
+    [signals addObject:self.playButtonClickSignal];
+    [signals addObject:self.progressSliderValueChangeSignal];
+    [signals addObject:self.fullScreenButtonClickSignal];
     if (signal) {
         [signals addObject:signal];
     }
@@ -120,8 +122,10 @@
 
 - (void)setupPlayButton{
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setBackgroundImage:UEX_VIDEO_IMAGE_NAMED(@"play") forState:UIControlStateNormal];
-    [button setBackgroundImage:UEX_VIDEO_IMAGE_NAMED(@"pause") forState:UIControlStateSelected];
+    
+    [button setImage:UEX_VIDEO_IMAGE_NAMED(@"play") forState:UIControlStateNormal];
+    [button setImage:UEX_VIDEO_IMAGE_NAMED(@"pause") forState:UIControlStateSelected];
+    
     [[[RACObserve(self.player, isPlaying) distinctUntilChanged]deliverOnMainThread]subscribeNext:^(NSNumber *x) {
         BOOL isPlaying = [x boolValue];
         if (isPlaying) {
@@ -134,44 +138,53 @@
     @weakify(self);
     [button mas_updateConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
-        make.left.equalTo(self.optionView.mas_left).with.offset(3);
+        make.left.equalTo(self.optionView.mas_left).with.offset(10);
         make.centerY.equalTo(self.optionView.mas_centerY);
         make.width.equalTo(self.buttonView.mas_width);
         make.height.equalTo(self.buttonView.mas_width);
     }];
     
-    self.playButtonSignal = [[button rac_signalForControlEvents:UIControlEventTouchUpInside] publish].autoconnect;
+    self.playButtonClickSignal = [button rac_signalForControlEvents:UIControlEventTouchUpInside].publish.autoconnect;
     self.playButton = button;
 }
 
 - (void)setupLabel{
     self.currentTimeLabel = [self makeTimeLabel];
     self.totalTimeLabel = [self makeTimeLabel];
-    @weakify(self);
-    RAC(self.currentTimeLabel,text) = [[[RACObserve(self.progressSlider, value) distinctUntilChanged]deliverOnMainThread]map:^id(id value) {
-        @strongify(self);
-        CGFloat progress = [value floatValue];
-        NSInteger secs = (NSInteger)floorf(self.player.duration * progress);
-        return [uexVideoHelper stringFromSeconds:secs];
-    }];
-    RAC(self.totalTimeLabel,text) = [[[RACObserve(self.player, duration) distinctUntilChanged]deliverOnMainThread]map:^id(id value) {
+
+    
+    RACSignal *progressChangeSignal = [RACSignal merge:@[self.progressSliderValueChangeSignal,RACObserve(self.progressSlider, value)]];
+    RACSignal *durationChangeSignal = RACObserve(self.player, duration);
+    
+    RAC(self.currentTimeLabel,text) =
+        [[[[RACSignal combineLatest:@[progressChangeSignal,durationChangeSignal] reduce:^id(NSNumber *progress,NSNumber *duration){
+        return @((NSInteger)floorf(duration.floatValue * progress.floatValue));
+            }]
+            distinctUntilChanged]
+            deliverOnMainThread]
+            map:^id(NSNumber *currentTime) {
+                NSInteger secs = currentTime.integerValue;
+                return [uexVideoHelper stringFromSeconds:secs];
+            }];
+    RAC(self.totalTimeLabel,text) = [[[durationChangeSignal distinctUntilChanged]deliverOnMainThread]map:^id(id value) {
         CGFloat duration = [value floatValue];
         NSInteger secs = (NSInteger)ceilf(duration);
         return [uexVideoHelper stringFromSeconds:secs];
     }];
-    
+    @weakify(self);
     [self.optionView addSubview:self.currentTimeLabel];
     [self.currentTimeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
         make.centerY.equalTo(self.optionView.mas_centerY);
-        make.left.equalTo(self.playButton.mas_left).with.offset(3);
+        make.left.equalTo(self.playButton.mas_right).with.offset(5);
     }];
     
     [self.optionView addSubview:self.totalTimeLabel];
+    
     [self.totalTimeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
         make.centerY.equalTo(self.optionView.mas_centerY);
-        make.right.equalTo(self.fullScreenButton.mas_left).with.offset(3);
+        make.right.equalTo(self.fullScreenButton.mas_left).with.offset(-5);
     }];
     
     
@@ -193,24 +206,27 @@
     @weakify(self)
     [self.progressView mas_updateConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
-        make.left.equalTo(self.currentTimeLabel).with.offset(3);
-        make.right.equalTo(self.totalTimeLabel).with.offset(-3);
-        make.centerY.equalTo(self.progressView.mas_centerY);
-        make.height.equalTo(@2);
+        make.left.equalTo(self.currentTimeLabel.mas_right).with.offset(3);
+        make.right.equalTo(self.totalTimeLabel.mas_left).with.offset(-3);
+        make.centerY.equalTo(self.optionView.mas_centerY).with.offset(1);
+        make.height.equalTo(@1.5);
     }];
     
-    [self.progressView mas_updateConstraints:^(MASConstraintMaker *make) {
+    [self.progressSlider mas_updateConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
-        make.left.equalTo(self.currentTimeLabel).with.offset(3);
-        make.right.equalTo(self.totalTimeLabel).with.offset(-3);
-        make.centerY.equalTo(self.progressView.mas_centerY);
+        make.left.equalTo(self.currentTimeLabel.mas_right).with.offset(3);
+        make.right.equalTo(self.totalTimeLabel.mas_left).with.offset(-3);
+        make.centerY.equalTo(self.optionView.mas_centerY);
         make.height.equalTo(self.optionView.mas_height).with.offset(-4);
     }];
+    
+    
     
 }
 
 - (void)setupFullScreenButton{
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
     [button setBackgroundImage:UEX_VIDEO_IMAGE_NAMED(@"fullscreen") forState:UIControlStateNormal];
     [button setBackgroundImage:UEX_VIDEO_IMAGE_NAMED(@"nonfullscreen") forState:UIControlStateSelected];
     [[[RACObserve(self.player, isFullScreen) distinctUntilChanged]deliverOnMainThread]subscribeNext:^(NSNumber *x) {
@@ -222,15 +238,17 @@
         }
     }];
     [self.optionView addSubview:button];
+    
     @weakify(self);
     [button mas_updateConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
-        make.right.equalTo(self.optionView.mas_right).with.offset(-3);
+        make.right.equalTo(self.optionView.mas_right).with.offset(-10);
         make.centerY.equalTo(self.optionView.mas_centerY);
         make.width.equalTo(self.buttonView.mas_width);
         make.height.equalTo(self.buttonView.mas_width);
     }];
-    self.fullScreenButtonSignal = [[button rac_signalForControlEvents:UIControlEventTouchUpInside] publish].autoconnect;
+    _fullScreenButton = button;
+    self.fullScreenButtonClickSignal = [button rac_signalForControlEvents:UIControlEventTouchUpInside].publish.autoconnect;
 }
 
 - (void)layoutSubviews{
@@ -243,12 +261,16 @@
 - (UIView *)topGradientView{
     if (!_topGradientView) {
         UIView *view = [UIView new];
+        //view.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:view];
-        [self mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(view.mas_top);
-            make.left.equalTo(view.mas_left);
-            make.right.equalTo(view.mas_right);
-            make.height.equalTo(view.mas_height).multipliedBy(5);
+        @weakify(self);
+        [view mas_updateConstraints:^(MASConstraintMaker *make) {
+            @strongify(self);
+            make.top.equalTo(self.mas_top);
+            make.left.equalTo(self.mas_left);
+            make.right.equalTo(self.mas_right);
+            make.height.equalTo(@50);
+
         }];
         _topGradientView = view;
     }
@@ -258,21 +280,27 @@
 - (UIView *)bottomGradientView{
     if (!_bottomGradientView) {
         UIView *view = [UIView new];
+        //view.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:view];
-        [self mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(view.mas_bottom);
-            make.left.equalTo(view.mas_left);
-            make.right.equalTo(view.mas_right);
-            make.height.equalTo(view.mas_height).multipliedBy(5);
+        @weakify(self);
+        [view mas_updateConstraints:^(MASConstraintMaker *make) {
+            @strongify(self);
+            make.bottom.equalTo(self.mas_bottom);
+            make.left.equalTo(self.mas_left);
+            make.right.equalTo(self.mas_right);
+            make.height.equalTo(@50);
         }];
         _bottomGradientView = view;
     }
     return _bottomGradientView;
 }
 
+
+
 - (UIView *)optionView{
     if (!_optionView) {
         UIView *view = [UIView new];
+        view.translatesAutoresizingMaskIntoConstraints = NO;
         [self insertSubview:view aboveSubview:self.bottomGradientView];
         @weakify(self);
         [view mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -288,6 +316,7 @@
 - (UIView *)buttonView{
     if (!_buttonView) {
         UIView *view = [UIView new];
+        view.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:view];
         view.backgroundColor = [UIColor clearColor];
         @weakify(self);
@@ -307,14 +336,24 @@
 - (UISlider *)progressSlider{
     if (!_progressSlider) {
         UISlider *slider = [[UISlider alloc] init];
+        slider.translatesAutoresizingMaskIntoConstraints = NO;
         slider.maximumValue = 1;
-        slider.maximumTrackTintColor = [EUtility ColorFromString:@"#4D4D4D4D"];
+        slider.maximumTrackTintColor = [EUtility colorFromHTMLString:@"#4D4D4D4D"];
+        
         slider.minimumValue = 0;
         slider.minimumTrackTintColor = [UIColor whiteColor];
+        slider.value = 0;
         [slider setThumbImage:UEX_VIDEO_IMAGE_NAMED(@"dot") forState:UIControlStateNormal];
-        self.progressSliderSignal = [[[slider rac_signalForControlEvents:UIControlEventValueChanged] filter:^BOOL(id value) {
-            return slider.isTracking;
-        }]publish].autoconnect;
+        @weakify(self);
+        RAC(slider,value) = [[RACObserve(self.player, currentTime) filter:^BOOL(id value) {
+            return !slider.isTracking;
+        }]map:^id(id value) {
+            @strongify(self);
+            if (self.player.duration == 0) {
+                return @0;
+            }
+            return @([value floatValue]/self.player.duration);
+        }];
         _progressSlider = slider;
     }
     return _progressSlider;
@@ -323,16 +362,46 @@
 
 
 - (UIProgressView *)progressView{
-    if (_progressView) {
+    if (!_progressView) {
         UIProgressView *progressView = [[UIProgressView alloc]init];
+        progressView.translatesAutoresizingMaskIntoConstraints = NO;
         progressView.trackTintColor = [UIColor clearColor];
-        progressView.trackTintColor = [EUtility ColorFromString:@"#4D4D4D4D"];
-        [progressView setProgress:1];
+        progressView.progressTintColor = [EUtility colorFromHTMLString:@"#99999999"];
+        RAC(progressView,progress) = [RACSignal combineLatest:@[RACObserve(self.player, bufferedDuration),RACObserve(self.player, duration)] reduce:^id(NSNumber *bufferedNumber,NSNumber *totalNumber){
+            CGFloat buffered = bufferedNumber.floatValue;
+            CGFloat total = totalNumber.floatValue;
+            return @((total == 0) ? 0 : buffered / total);
+        }];
         _progressView = progressView;
     }
     return _progressView;
 }
 
+- (RACSignal *)progressSliderValueChangeSignal{
+    if (!_progressSliderValueChangeSignal) {
+        _progressSliderValueChangeSignal = [[self.progressSlider rac_signalForControlEvents:UIControlEventValueChanged]map:^id(UISlider *slider) {
+            CGFloat progress = slider.value;
+            //NSLog(@"%@",@(progress));
+            return @(progress);
+        }].publish.autoconnect;
+    }
+    return _progressSliderValueChangeSignal;
+}
+
+- (RACSignal *)progressSliderStartDraggingSignal{
+    if (!_progressSliderStartDraggingSignal) {
+        _progressSliderStartDraggingSignal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            [[self.progressSlider rac_signalForControlEvents:UIControlEventTouchDown] subscribeNext:^(id x) {
+                [subscriber sendNext:@YES];
+            }];
+            [[self.progressSlider rac_signalForControlEvents:UIControlEventTouchUpInside | UIControlEventTouchCancel | UIControlEventTouchUpOutside] subscribeNext:^(id x) {
+                [subscriber sendNext:@NO];
+            }];
+            return nil;
+        }].publish.autoconnect;
+    }
+    return _progressSliderStartDraggingSignal;
+}
 
 
 @end

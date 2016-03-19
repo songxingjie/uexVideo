@@ -50,7 +50,7 @@
     if (self) {
         
         
-        self.backgroundColor = [EUtility colorFromHTMLString:@"9A9A9ACD"];
+        self.backgroundColor = [EUtility colorFromHTMLString:@"#CD9A9A9A"];
         self.layer.cornerRadius = 10;
         self.layer.masksToBounds = YES;
         
@@ -61,7 +61,7 @@
             @strongify(self);
             make.height.equalTo(@120);
             make.width.equalTo(@120);
-            make.top.equalTo(self.mas_top);
+            make.top.equalTo(self.mas_top).with.offset(20);
             make.centerX.equalTo(self.mas_centerX);
         }];
         _backgroundView = backgroundView;
@@ -70,6 +70,7 @@
         UIView *progressView = [UIView new];
         _progressDots = [NSMutableArray array];
         static NSInteger kTotalDotsCount = 18;
+        static CGFloat kDotWidth = 5;
         for(int i = 0;i < kTotalDotsCount;i++){
             UIView *dotView = [UIView new];
             dotView.backgroundColor = [UIColor whiteColor];
@@ -79,8 +80,8 @@
                 @strongify(progressView);
                 make.top.equalTo(progressView.mas_top);
                 make.bottom.equalTo(progressView.mas_bottom);
-                make.width.equalTo(@4);
-                make.left.equalTo(progressView.mas_left).with.offset(5 * i + 1);
+                make.width.equalTo(@(kDotWidth));
+                make.left.equalTo(progressView.mas_left).with.offset((kDotWidth + 1) * i + 1);
             }];
             [_progressDots addObject:dotView];
         }
@@ -88,7 +89,7 @@
         [self addSubview:progressView];
         [progressView mas_updateConstraints:^(MASConstraintMaker *make) {
             @strongify(self);
-            make.width.equalTo(@(5 * kTotalDotsCount + 1));
+            make.width.equalTo(@((kDotWidth + 1) * kTotalDotsCount + 1));
             make.height.equalTo(@4);
             make.top.equalTo(self.mas_top).with.offset(130);
             make.centerX.equalTo(self.mas_centerX);
@@ -105,18 +106,32 @@
         [self addSubview:titleLabel];
         [titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.mas_centerX);
-            make.top.equalTo(self.mas_top).with.offset(30);
+            make.top.equalTo(self.mas_top).with.offset(10);
         }];
         _titleLabel = titleLabel;
-        
-        
         UIWindow *window = [UIApplication sharedApplication].keyWindow;
         [window addSubview:self];
+
+        
+        
+        
         [self mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(window);
-            make.width.equalTo(@160);
-            make.height.equalTo(@160);
+            make.centerX.equalTo(window.mas_centerX);
+            make.centerY.equalTo(window.mas_centerY).offset(-5);
+            make.width.equalTo(@155);
+            make.height.equalTo(@155);
             
+        }];
+        
+        [[[NSNotificationCenter defaultCenter] rac_addObserverForName:UIDeviceOrientationDidChangeNotification object:nil]subscribeNext:^(id x) {
+            CGFloat o = 0;
+            if ([UIDevice currentDevice].orientation == UIDeviceOrientationPortrait || [UIDevice currentDevice].orientation == UIDeviceOrientationPortraitUpsideDown || [UIDevice currentDevice].orientation == UIDeviceOrientationFaceUp) {
+                o = -5;
+            };
+            [self mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(window.mas_centerY).offset(o);
+            }];
+            [self setNeedsUpdateConstraints];
         }];
         [self hide];
         [self disable];
@@ -127,7 +142,7 @@
             }
             self.alpha = 1;
             CGFloat progress = [x floatValue];
-            NSInteger dotCount = progress / kTotalDotsCount ;
+            NSInteger dotCount = progress * kTotalDotsCount ;
             for (NSInteger i = 0;i < self.progressDots.count ; i++) {
                 UIView *view = self.progressDots[i];
                 if (i <= dotCount) {
@@ -137,7 +152,7 @@
                 }
             }
         }];
-        [[signal throttle:3.0] subscribeNext:^(id x) {
+        [[signal throttle:1.5] subscribeNext:^(id x) {
             if(!self.isEnabled){
                 return;
             }
