@@ -10,12 +10,14 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "EUExBase.h"
 #import "MediaPlayer.h"
-#import "RecordVideo.h"
+
 
 @interface EUExVideo : EUExBase {
-	RecordVideo *rVideoObj;
 	MediaPlayer *mPlayerObj;
 }
 -(void)uexVideoWithOpId:(int)inOpId dataType:(int)inDataType data:(NSString *)inData;
--(void)uexVideoWithFunction:(NSString *)name result:(NSString *)result;
+
+
+- (void)callbackJSONWithName:(NSString *)name object:(id)obj;
+
 @end
