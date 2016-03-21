@@ -2,6 +2,8 @@
 <uexplugins>
     <plugin name="uexVideo">
         <method name="open"></method>
-		<method name="record"></method>
-	</plugin>
+        <method name="record"></method>
+        <method name="openPlayer"></method>
+        <method name="closePlayer"></method>
+    </plugin>
 </uexplugins>
