@@ -62,7 +62,7 @@
     if (self.playerView) {
         [self close];
     }
-    self.playerView = [[uexVideoPlayerView alloc]initWithFrame:CGRectMake(50, 300, 360, 240) URL:movieURL];
+    self.playerView = [[uexVideoPlayerView alloc]initWithFrame:frame URL:movieURL];
     self.playerView.delegate = self;
    
     [[self rac_signalForSelector:@selector(playerViewDidEnterFullScreen:) fromProtocol:@protocol(uexVideoPlayerViewDelegate)]subscribeNext:^(id x) {
