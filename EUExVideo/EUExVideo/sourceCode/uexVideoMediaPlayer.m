@@ -130,7 +130,7 @@
     [self.playerView pause];
     [self.euexObj callbackJSONWithName:@"onPlayerClose" object:@{
                                                                  @"src":self.inPath,
-                                                                 @"currentTime":@(self.playerView.currentTime)
+                                                                 @"currentTime":@((NSInteger)self.playerView.currentTime)
                                                                  }];
     [self.playerView removeFromSuperview];
     [self resetConfig];
