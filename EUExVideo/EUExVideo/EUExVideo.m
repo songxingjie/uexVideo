@@ -20,7 +20,7 @@
 
 #define UEX_VIDEO_KEY_TO_NSSTRING(x) ([NSString stringWithCString:#x encoding:NSUTF8StringEncoding])
 #define UEX_VIDEO_GET_BOOLEAN_VALUE(dict,key,defaultValue) \
-        BOOL key = info[UEX_VIDEO_KEY_TO_NSSTRING(key)] ? [info[UEX_VIDEO_KEY_TO_NSSTRING(key)] boolValue] : defaultValue;
+    BOOL key = info[UEX_VIDEO_KEY_TO_NSSTRING(key)] ? [info[UEX_VIDEO_KEY_TO_NSSTRING(key)] boolValue] : defaultValue;
 
 #define UEX_VIDEO_GET_FLOAT_VALUE(dict,key,defaultValue) \
     CGFloat key = info[UEX_VIDEO_KEY_TO_NSSTRING(key)] ? [info[UEX_VIDEO_KEY_TO_NSSTRING(key)] floatValue] : defaultValue;

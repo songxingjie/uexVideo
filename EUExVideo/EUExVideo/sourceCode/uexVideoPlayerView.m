@@ -87,7 +87,7 @@ static OSSpinLock lock;
         self.closeButton.hidden = NO;
         [self.maskView setFullScreenButtonHidden:NO];
         [self setupGestures];
-        
+        [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: NULL];
         
     }
     return self;
