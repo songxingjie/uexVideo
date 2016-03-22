@@ -85,7 +85,7 @@
     self.player.isScrollWithWeb = scrollWithWeb;
     self.player.showCloseButton = showCloseButton;
     self.player.showScaleButton = showScaleButton;
-    [self.player openWithFrame:CGRectMake(x, y, width, height) path:path startTime:startTime];
+    [self.player openWithFrame:CGRectMake(x, y, width, height) path:[self absPath:path] startTime:startTime];
 }
 
 
