@@ -36,8 +36,8 @@
 #pragma mark - private macro
 
 #define _UEX_VIDEO_BUNDLE ([EUtility bundleForPlugin:@"uexVideo"])
-#define _UEX_VIDEO_BUNDLE_IAMGE_PATH(name,ext) ([[_UEX_VIDEO_BUNDLE resourcePath]stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",name,ext]])//这里不能用pathForResource 否则2x 3x会有问题
-#define _UEX_VIDEO_IMAGE_NAMED(name) ([UIImage imageWithContentsOfFile:_UEX_VIDEO_BUNDLE_IAMGE_PATH(name,@"png")])
+#define _UEX_VIDEO_BUNDLE_IMAGE_PATH(name,ext) ([[_UEX_VIDEO_BUNDLE resourcePath]stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",name,ext]])//这里不能用pathForResource 否则2x 3x会有问题
+#define _UEX_VIDEO_IMAGE_NAMED(name) ([UIImage imageWithContentsOfFile:_UEX_VIDEO_BUNDLE_IMAGE_PATH(name,@"png")])
 
 
 extern NSString *const kUexVideoOrientationKey;
