@@ -88,6 +88,10 @@ static OSSpinLock lock;
         [self.maskView setFullScreenButtonHidden:NO];
         [self setupGestures];
         [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: NULL];
+        [self.rac_willDeallocSignal subscribeNext:^(id x) {
+            [UEX_VIDEO_BRIGHTNESS_VIEW hide];
+            [UEX_VIDEO_BRIGHTNESS_VIEW disable];
+        }];
         
     }
     return self;
@@ -563,5 +567,6 @@ static OSSpinLock lock;
     }
     return _closeButton;
 }
+
 
 @end
