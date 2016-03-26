@@ -151,7 +151,9 @@ static OSSpinLock lock;
             [self rotateToOrientation:UIInterfaceOrientationLandscapeRight];
             self.rotatedFromPortrait = YES;
         }
-        self.frame = [UIScreen mainScreen].bounds;
+        //考虑到当前view可能在一个scrollView里的情况 不能直接用[UIScreen mainScreen].bounds
+        CGRect rect = [[UIApplication sharedApplication].keyWindow convertRect:[UIScreen mainScreen].bounds toView:self.superview];
+        self.frame = rect;
 
         self.isFullScreen = YES;
         if(self.delegate && [self.delegate respondsToSelector:@selector(playerViewDidEnterFullScreen:)]){
@@ -542,6 +544,10 @@ static OSSpinLock lock;
         [self addSubview:button];
         @weakify(self);
         [[button rac_signalForControlEvents:UIControlEventTouchUpInside].publish.autoconnect subscribeNext:^(id x) {
+            [self pause];
+            if (self.isFullScreen) {
+                [self exitFullScreen];
+            }
             @strongify(self);
             if (self.delegate && [self.delegate respondsToSelector:@selector(playViewCloseButtonDidClick:)]) {
                 [self.delegate playViewCloseButtonDidClick:self];
