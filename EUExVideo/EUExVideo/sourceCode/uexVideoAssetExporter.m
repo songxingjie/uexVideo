@@ -88,7 +88,9 @@
         return [RACSignal error:error];
     }
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @weakify(self);
         [self.cancelSignal subscribeNext:^(id x) {
+            @strongify(self);
             [self.writer cancelWriting];
             [self.reader cancelReading];
             [subscriber sendError:[NSError errorWithDomain:AVFoundationErrorDomain code:AVErrorExportFailed userInfo:@{NSLocalizedDescriptionKey: @"Exportation has been Cancelled!" }]];

@@ -57,6 +57,7 @@ typedef  NS_ENUM(NSInteger,uexVideoPlayerViewStatus){
 - (void)forceFullScreen;//进入全屏并且隐藏缩放按钮
 - (void)playWhenPrepared;//执行此方法后player会在准备完毕之时立即开始播放；
 - (void)pause;
+- (void)close;
 
 @end
 

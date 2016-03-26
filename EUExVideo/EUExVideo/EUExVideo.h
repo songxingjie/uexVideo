@@ -10,11 +10,15 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "EUExBase.h"
 #import "MediaPlayer.h"
-
+@class uexVideoRecorder;
+@class uexVideoMediaPlayer;
 
 @interface EUExVideo : EUExBase {
 	MediaPlayer *mPlayerObj;
 }
+
+@property (nonatomic,strong)uexVideoRecorder *recorder;
+@property (nonatomic,strong)uexVideoMediaPlayer *player;
 -(void)uexVideoWithOpId:(int)inOpId dataType:(int)inDataType data:(NSString *)inData;
 
 

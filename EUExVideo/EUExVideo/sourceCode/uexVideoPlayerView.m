@@ -88,14 +88,11 @@ static OSSpinLock lock;
         [self.maskView setFullScreenButtonHidden:NO];
         [self setupGestures];
         [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: NULL];
-        [self.rac_willDeallocSignal subscribeNext:^(id x) {
-            [UEX_VIDEO_BRIGHTNESS_VIEW hide];
-            [UEX_VIDEO_BRIGHTNESS_VIEW disable];
-        }];
-        
     }
     return self;
 }
+
+
 
 - (void)forceFullScreen{
     self.isForcedFullScreen = YES;
@@ -143,7 +140,13 @@ static OSSpinLock lock;
     }
 }
 
-
+- (void)close{
+    [self pause];
+    if(self.isFullScreen){
+        [self exitFullScreen];
+    }
+    [self removeFromSuperview];
+}
 
 - (void)enterFullScreen{
     OSSpinLockLock(&lock);
@@ -214,11 +217,13 @@ static OSSpinLock lock;
     }];
     [[RACSignal interval:0.2 onScheduler:[RACScheduler mainThreadScheduler]].repeat
      subscribeNext:^(id x) {//更新currentTime 间隔为0.2s
+         @strongify(self);
         CMTime time = self.player.currentItem.currentTime;
         self.currentTime = (CGFloat)time.value / (CGFloat)time.timescale;
     }];
     [RACObserve(self.playerItem, status)
      subscribeNext:^(id x) {
+         @strongify(self);
         AVPlayerItemStatus status = [x integerValue];
         switch (status) {
             case AVPlayerItemStatusUnknown: {
@@ -260,6 +265,7 @@ static OSSpinLock lock;
     
     [[[NSNotificationCenter defaultCenter] rac_addObserverForName:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem]
      subscribeNext:^(id x) {
+         @strongify(self);
          if (!self.isForcedFullScreen) {
              [self exitFullScreen];
          }
@@ -268,10 +274,12 @@ static OSSpinLock lock;
     }];
     [[[NSNotificationCenter defaultCenter] rac_addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil]
      subscribeNext:^(id x) {
+         @strongify(self);
         [self pause];
     }];
     [[[NSNotificationCenter defaultCenter] rac_addObserverForName:UIApplicationDidBecomeActiveNotification object:nil]
      subscribeNext:^(id x) {
+         @strongify(self);
         if (!self.isPausedByUser) {
             [self playWhenPrepared];
         }
@@ -289,10 +297,11 @@ static OSSpinLock lock;
         make.edges.equalTo(self);
     }];
     [self.maskView.playButtonClickSignal subscribeNext:^(id x) {
+        @strongify(self);
         [self userChangePlayStatus];
     }];
     [self.maskView.fullScreenButtonClickSignal subscribeNext:^(id x) {
-
+        @strongify(self);
         if(!self.isFullScreen){
             [self enterFullScreen];
         }else if(!self.isForcedFullScreen){
@@ -302,13 +311,16 @@ static OSSpinLock lock;
     [self.maskView setShowViewSignal:[RACSignal merge:@[self.singleTapSignal,self.panSignal]]];
 
     [[self.maskView.progressSliderValueChangeSignal map:^id(id x) {
+        @strongify(self);
         return @((NSInteger)nearbyintf([x floatValue] * self.duration));
         
     }].distinctUntilChanged subscribeNext:^(id x) {
+        @strongify(self);
         //用map + distinctUntilChanged 进行过滤,减少seek次数,降低CPU占用
         [self seekToTime:[x integerValue]];
     }];
     [self.maskView.progressSliderStartDraggingSignal subscribeNext:^(id x) {
+        @strongify(self);
         BOOL isStartDragging = [x boolValue];
         if (isStartDragging) {
             [self pause];
@@ -366,7 +378,7 @@ static OSSpinLock lock;
     [[panSignal filter:^BOOL(id value) {
         return action == uexVideoPlayerViewPanGestureAdjustBrightness;
     }]subscribeNext:^(UIPanGestureRecognizer *panGes) {
-
+        @strongify(self);
         
         [UIScreen mainScreen].brightness -= [panGes velocityInView:self].y / 10000;
     }];
@@ -375,6 +387,7 @@ static OSSpinLock lock;
     [[panSignal filter:^BOOL(id value) {
         return action == uexVideoPlayerViewPanGestureAdjustVolume;
     }]subscribeNext:^(UIPanGestureRecognizer *panGes) {
+        @strongify(self);
         [UEX_VIDEO_BRIGHTNESS_VIEW hide];
         self.volumeSlider.value -= [panGes velocityInView:self].y / 10000;
     }];
@@ -411,6 +424,7 @@ static OSSpinLock lock;
     
     //点击事件
     [self.singleTapSignal subscribeNext:^(UITapGestureRecognizer *tapGes) {
+        @strongify(self);
         if (self.maskView.alpha != 1) {
             return;
         }
@@ -420,6 +434,12 @@ static OSSpinLock lock;
             return;
         }
         [self userChangePlayStatus];
+    }];
+    
+    //解决亮度指示无法消除的问题;
+    [self.rac_willDeallocSignal subscribeNext:^(id x) {
+        [UEX_VIDEO_BRIGHTNESS_VIEW hide];
+        [UEX_VIDEO_BRIGHTNESS_VIEW disable];
     }];
     
 }
@@ -541,6 +561,8 @@ static OSSpinLock lock;
     return _volumeSlider;
 }
 
+
+
 - (UIButton *)closeButton{
     if (!_closeButton) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -548,16 +570,15 @@ static OSSpinLock lock;
         [self addSubview:button];
         @weakify(self);
         [[button rac_signalForControlEvents:UIControlEventTouchUpInside].publish.autoconnect subscribeNext:^(id x) {
-            [self pause];
-            if (self.isFullScreen) {
-                [self exitFullScreen];
-            }
             @strongify(self);
             if (self.delegate && [self.delegate respondsToSelector:@selector(playViewCloseButtonDidClick:)]) {
                 [self.delegate playViewCloseButtonDidClick:self];
+            }else{
+                [self close];
             }
         }];
         [button mas_updateConstraints:^(MASConstraintMaker *make) {
+            @strongify(self);
             make.top.equalTo(self.mas_top).with.offset(5);
             make.left.equalTo(self.mas_left).with.offset(5);
             make.height.equalTo(@30);

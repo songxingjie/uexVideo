@@ -51,6 +51,8 @@
 
 @implementation uexVideoPlayerMaskView
 
+
+
 - (instancetype)initWithPlayerView:(uexVideoPlayerView *)playerView{
     self = [super init];
     if (self) {
@@ -74,6 +76,7 @@
 }
 
 - (void)setShowViewSignal:(RACSignal *)signal{
+    
     NSMutableArray *signals = [NSMutableArray array];
     [signals addObject:self.playButtonClickSignal];
     [signals addObject:self.progressSliderValueChangeSignal];
@@ -86,10 +89,13 @@
     }
     
     RACSignal *showSignal = [RACSignal merge:signals];
+    @weakify(self);
     RACDisposable *show = [showSignal.deliverOnMainThread subscribeNext:^(id x) {
+        @strongify(self);
         self.alpha = 1;
     }];
     RACDisposable *hide = [[showSignal throttle:3].deliverOnMainThread subscribeNext:^(id x) {
+        @strongify(self);
         if (self.alpha == 1) {
             [UIView animateWithDuration:1 animations:^{
                 self.alpha = 0;
@@ -100,6 +106,8 @@
         [show dispose];
         [hide dispose];
     }];
+    
+    
 }
 
 - (void)setupBackgroundUI{
@@ -390,7 +398,9 @@
 
 - (RACSignal *)progressSliderStartDraggingSignal{
     if (!_progressSliderStartDraggingSignal) {
+        @weakify(self);
         _progressSliderStartDraggingSignal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            @strongify(self);
             [[self.progressSlider rac_signalForControlEvents:UIControlEventTouchDown] subscribeNext:^(id x) {
                 [subscriber sendNext:@YES];
             }];
@@ -402,6 +412,5 @@
     }
     return _progressSliderStartDraggingSignal;
 }
-
 
 @end

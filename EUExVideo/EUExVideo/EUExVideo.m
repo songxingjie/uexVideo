@@ -13,8 +13,7 @@
 #import "uexVideoRecorder.h"
 #import "uexVideoMediaPlayer.h"
 @interface EUExVideo()
-@property (nonatomic,strong)uexVideoRecorder *recorder;
-@property (nonatomic,strong)uexVideoMediaPlayer *player;
+
 @end
 
 

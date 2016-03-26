@@ -64,8 +64,9 @@
     }
     self.playerView = [[uexVideoPlayerView alloc]initWithFrame:frame URL:movieURL];
     self.playerView.delegate = self;
-   
+    @weakify(self);
     [[self rac_signalForSelector:@selector(playerViewDidEnterFullScreen:) fromProtocol:@protocol(uexVideoPlayerViewDelegate)]subscribeNext:^(id x) {
+        @strongify(self);
         [self resetConfig];
         __kindof ACEBaseViewController *VC = (__kindof ACEBaseViewController *)theApp.drawerController;
         if (![VC respondsToSelector:@selector(canAutorotate)] || ![VC respondsToSelector:@selector(isStatusBarHidden)]) {
@@ -83,12 +84,15 @@
         }];
     }];
     [[self rac_signalForSelector:@selector(playerViewWillExitFullScreen:) fromProtocol:@protocol(uexVideoPlayerViewDelegate)]subscribeNext:^(id x) {
+        @strongify(self);
         [self resetConfig];
     }];
     [[self rac_signalForSelector:@selector(playViewCloseButtonDidClick:) fromProtocol:@protocol(uexVideoPlayerViewDelegate)]subscribeNext:^(id x) {
+        @strongify(self);
         [self close];
     }];
     [[self rac_willDeallocSignal]subscribeCompleted:^{
+        @strongify(self);
         [self resetConfig];
     }];
 
@@ -107,7 +111,7 @@
     if (self.autoStart) {
         [self.playerView playWhenPrepared];
     }
-     @weakify(self);
+    
     [RACObserve(self.playerView, status).distinctUntilChanged subscribeNext:^(id x) {
         @strongify(self);
         [self.euexObj callbackJSONWithName:@"onPlayerStatusChange" object:@{
@@ -127,7 +131,7 @@
     if(!self.playerView){
         return;
     }
-    [self.playerView pause];
+    [self.playerView close];
     [self.euexObj callbackJSONWithName:@"onPlayerClose" object:@{
                                                                  @"src":self.inPath,
                                                                  @"currentTime":@((NSInteger)self.playerView.currentTime)
@@ -136,6 +140,7 @@
     [self resetConfig];
     self.playerView = nil;
     self.inPath = nil;
+    self.euexObj.player = nil;
     
 }
 

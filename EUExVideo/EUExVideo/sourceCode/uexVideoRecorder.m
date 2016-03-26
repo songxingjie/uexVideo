@@ -135,6 +135,7 @@
             [self.euexObj callbackJSONWithName:@"onRecordFinish" object:@{
                                                                           @"result":@(1),
                                                                           }];
+            self.euexObj.recorder = nil;
         }];
     });
 }
@@ -149,6 +150,7 @@
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         [picker dismissViewControllerAnimated:YES completion:^{
+            self.euexObj.recorder = nil;
         }];
     });
 
