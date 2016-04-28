@@ -96,11 +96,12 @@ static OSSpinLock lock;
 
 - (void)forceFullScreen{
     self.isForcedFullScreen = YES;
+    [self setCloseButtonHidden:NO];
     [self enterFullScreen];
 }
 
 - (void)setCloseButtonHidden:(BOOL)isHidden{
-    if (isHidden) {
+    if (isHidden && !self.isFullScreen) {
         self.closeButton.hidden = YES;
     }else{
         self.closeButton.hidden = NO;
