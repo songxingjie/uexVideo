@@ -36,6 +36,7 @@
 		42A6E52D1C97F7D4004F8765 /* brightness@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 42A6E52B1C97F7D4004F8765 /* brightness@3x.png */; };
 		42BA31E21C9CF3A00011CEB8 /* ReactiveCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 42A6E4E41C96699E004F8765 /* ReactiveCocoa.framework */; };
 		42BA31E31C9CF3A40011CEB8 /* Masonry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 42A6E50F1C97D41D004F8765 /* Masonry.framework */; };
+		42FF2D2E1D127C77003994A5 /* AppCanKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42FF2D2D1D127C77003994A5 /* AppCanKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,7 +67,6 @@
 		03442C7E18B2338100CEC18D /* libuexVideo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libuexVideo.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		03442C8118B2338100CEC18D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03442C8518B2338100CEC18D /* EUExVideo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EUExVideo-Prefix.pch"; sourceTree = "<group>"; };
-		03442CA818B233D700CEC18D /* EUExBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExBase.h; sourceTree = "<group>"; };
 		03442CA918B233D700CEC18D /* EUExBaseDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExBaseDefine.h; sourceTree = "<group>"; };
 		03442CAA18B233D700CEC18D /* EUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUtility.h; sourceTree = "<group>"; };
 		03442CAB18B233D700CEC18D /* EUExVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExVideo.h; sourceTree = "<group>"; };
@@ -116,6 +116,7 @@
 		42A6E52B1C97F7D4004F8765 /* brightness@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brightness@3x.png"; sourceTree = "<group>"; };
 		42BA31C11C9BF2320011CEB8 /* WidgetOneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetOneDelegate.h; sourceTree = "<group>"; };
 		42BA31C21C9BF2610011CEB8 /* ACEBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACEBaseViewController.h; sourceTree = "<group>"; };
+		42FF2D2D1D127C77003994A5 /* AppCanKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCanKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +128,7 @@
 				42A6E4E51C96699E004F8765 /* ReactiveCocoa.framework in Frameworks */,
 				42A6E5101C97D41D004F8765 /* Masonry.framework in Frameworks */,
 				03442C8218B2338100CEC18D /* Foundation.framework in Frameworks */,
+				42FF2D2E1D127C77003994A5 /* AppCanKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,6 +173,7 @@
 		03442C8318B2338100CEC18D /* EUExVideo */ = {
 			isa = PBXGroup;
 			children = (
+				42FF2D2D1D127C77003994A5 /* AppCanKit.framework */,
 				3CEE404E1C520B64005CD332 /* JSON */,
 				03442CA718B233D700CEC18D /* engineHeader */,
 				03442CAB18B233D700CEC18D /* EUExVideo.h */,
@@ -194,7 +197,6 @@
 			children = (
 				42BA31C11C9BF2320011CEB8 /* WidgetOneDelegate.h */,
 				42BA31C21C9BF2610011CEB8 /* ACEBaseViewController.h */,
-				03442CA818B233D700CEC18D /* EUExBase.h */,
 				03442CA918B233D700CEC18D /* EUExBaseDefine.h */,
 				03442CAA18B233D700CEC18D /* EUtility.h */,
 			);
@@ -307,7 +309,7 @@
 		03442C7618B2338100CEC18D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = zhengcuan;
 			};
 			buildConfigurationList = 03442C7918B2338100CEC18D /* Build configuration list for PBXProject "EUExVideo" */;
@@ -419,7 +421,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "armv7 armv7s arm64";
@@ -452,7 +454,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s arm64";
@@ -469,6 +471,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/EUExVideo/sourceCode",
+					"$(PROJECT_DIR)/EUExVideo",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EUExVideo/EUExVideo-Prefix.pch";
@@ -491,6 +494,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/EUExVideo/sourceCode",
+					"$(PROJECT_DIR)/EUExVideo",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EUExVideo/EUExVideo-Prefix.pch";

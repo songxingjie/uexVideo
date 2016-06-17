@@ -1,10 +1,10 @@
 /**
  *
- *	@file   	: uexVideoMediaPlayer.h  in EUExVideo Project .
+ *	@file   	: ACNil.h  in AppCanKit
  *
- *	@author 	: CeriNo.
- * 
- *	@date   	: Created on 16/3/15.
+ *	@author 	: CeriNo
+ *
+ *	@date   	: Created on 16/5/25.
  *
  *	@copyright 	: 2016 The AppCan Open Source Project.
  *
@@ -23,18 +23,13 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  NSNull的替代品
+ *  不会导致unrecogized selector崩溃
+ */
+@interface ACNil : NSProxy
 
 
-@class EUExVideo;
-@interface uexVideoMediaPlayer : NSObject 
-@property (nonatomic,assign)BOOL isScrollWithWeb;
-@property (nonatomic,assign)BOOL autoStart;
-@property (nonatomic,assign)BOOL forceFullScreen;
-@property (nonatomic,assign)BOOL showCloseButton;
-@property (nonatomic,assign)BOOL showScaleButton;
--(instancetype)initWithEUExVideo:(EUExVideo *)euexObj;
++ (instancetype)null;
 
-- (void)openWithFrame:(CGRect)frame path:(NSString *)inPath startTime:(CGFloat)startTime;
-
-- (void)close;
 @end

@@ -1,10 +1,10 @@
 /**
  *
- *	@file   	: uexVideoMediaPlayer.h  in EUExVideo Project .
+ *	@file   	: UIColor+ACHTMLColor.h  in AppCanKit
  *
- *	@author 	: CeriNo.
+ *	@author 	: CeriNo 
  * 
- *	@date   	: Created on 16/3/15.
+ *	@date   	: Created on 16/5/31.
  *
  *	@copyright 	: 2016 The AppCan Open Source Project.
  *
@@ -20,21 +20,22 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
+ 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 
 
-@class EUExVideo;
-@interface uexVideoMediaPlayer : NSObject 
-@property (nonatomic,assign)BOOL isScrollWithWeb;
-@property (nonatomic,assign)BOOL autoStart;
-@property (nonatomic,assign)BOOL forceFullScreen;
-@property (nonatomic,assign)BOOL showCloseButton;
-@property (nonatomic,assign)BOOL showScaleButton;
--(instancetype)initWithEUExVideo:(EUExVideo *)euexObj;
 
-- (void)openWithFrame:(CGRect)frame path:(NSString *)inPath startTime:(CGFloat)startTime;
+@interface UIColor (ACHTMLColor)
 
-- (void)close;
+/**
+ *  尝试解析一个HTMLColor字符串,得到UIColor
+ *
+ *  @param htmlColorStr <#htmlColorStr description#>
+ *
+ *  @return 解析得到的UIColor,解析失败时会返回nil
+ */
++ (nullable instancetype)ac_ColorWithHTMLColorString:(nonnull NSString *)htmlColorStr;
+
 @end
