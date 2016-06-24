@@ -26,6 +26,7 @@
 #import "EUExVideo.h"
 #import "EUtility.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import <AVFoundation/AVFoundation.h>
 @interface uexVideoRecorder()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property (nonatomic,assign)CGFloat outputWidth;
 @property (nonatomic,assign)CGFloat outputHeight;
@@ -77,8 +78,16 @@
 
 - (void)statRecord{
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        [self.euexObj callbackJSONWithName:@"onRecordFinish" object:@{
+                                                                      @"result":@(2),
+                                                                      @"errorStr":@"camera unavailable"
+                                                                      }];
+        
         return;
     }
+    
+    
+    
     
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     
@@ -119,12 +128,53 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
         controller.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [controller presentViewController:picker animated:YES completion:^{
-        }];
-    });
+
+    
+    
+    
+     [[self requestRecordRequest]subscribeError:^(NSError *error) {
+         [self.euexObj callbackJSONWithName:@"onRecordFinish" object:@{
+                                                                       @"result":@(2),
+                                                                       @"errorStr":@"request access failed."
+                                                                       }];
+     } completed:^{
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [controller presentViewController:picker animated:YES completion:nil];
+         });
+     }];
+     
+
 
 }
+
+
+- (RACSignal *)requestRecordRequest{
+    
+    return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+            if(granted){
+                [subscriber sendCompleted];
+            }else{
+                [subscriber sendError:nil];
+            }
+        }];
+        return nil;
+    }]then:^RACSignal *{
+        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio completionHandler:^(BOOL granted) {
+                if(granted){
+                    [subscriber sendCompleted];
+                }else{
+                    [subscriber sendError:nil];
+                }
+            }];
+            return nil;
+        }];
+    }];
+}
+
+
+
 
 
 #pragma mark - UIImagePickerControllerDelegate

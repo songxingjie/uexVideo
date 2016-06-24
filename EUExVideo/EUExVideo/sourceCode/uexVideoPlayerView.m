@@ -54,6 +54,10 @@
 @property (nonatomic,strong)UISlider *volumeSlider;
 @property (nonatomic,strong)MPVolumeView *systemVolumeView;
 @property (nonatomic,strong)UIButton *closeButton;
+
+@property (nonatomic,weak)UIView *rootView;
+
+
 @end
 
 
@@ -97,6 +101,7 @@ static OSSpinLock lock;
 - (void)forceFullScreen{
     self.isForcedFullScreen = YES;
     [self setCloseButtonHidden:NO];
+    [self setFullScreenBottonHidden:YES];
     [self enterFullScreen];
 }
 
@@ -152,22 +157,26 @@ static OSSpinLock lock;
 - (void)enterFullScreen{
     OSSpinLockLock(&lock);
     if (!self.isFullScreen) {
-
+        self.rootView = self.superview;
         self.normalFrame = self.frame;
         UIInterfaceOrientation orientation = (UIInterfaceOrientation)[UIDevice currentDevice].orientation;
         if (orientation != UIInterfaceOrientationLandscapeRight && orientation != UIInterfaceOrientationLandscapeLeft) {
             [self rotateToOrientation:UIInterfaceOrientationLandscapeRight];
             self.rotatedFromPortrait = YES;
         }
-        //考虑到当前view可能在一个scrollView里的情况 不能直接用[UIScreen mainScreen].bounds
-        CGRect rect = [[UIApplication sharedApplication].keyWindow convertRect:[UIScreen mainScreen].bounds toView:self.superview];
-        self.frame = rect;
+        
+
+        [[UIApplication sharedApplication].keyWindow addSubview:self];
+        self.frame = [UIScreen mainScreen].bounds;
+        
+        
+        //CGRect rect = [[UIApplication sharedApplication].keyWindow convertRect:[UIScreen mainScreen].bounds toView:self.superview];
+        //self.frame = rect;
 
         self.isFullScreen = YES;
         if(self.delegate && [self.delegate respondsToSelector:@selector(playerViewDidEnterFullScreen:)]){
             [self.delegate playerViewDidEnterFullScreen:self];
         }
-
     }
     OSSpinLockUnlock(&lock);
     
@@ -184,6 +193,9 @@ static OSSpinLock lock;
             self.rotatedFromPortrait = NO;
         }
         self.frame = self.normalFrame;
+        [self.rootView addSubview:self];
+        self.normalFrame = CGRectZero;
+        self.rootView = nil;
         self.isFullScreen = NO;
 
     }
