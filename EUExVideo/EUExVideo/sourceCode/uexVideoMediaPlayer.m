@@ -87,11 +87,15 @@
         @strongify(self);
         [self resetConfig];
     }];
-    [[self rac_signalForSelector:@selector(playViewCloseButtonDidClick:) fromProtocol:@protocol(uexVideoPlayerViewDelegate)]subscribeNext:^(id x) {
+    [[self rac_signalForSelector:@selector(playerViewCloseButtonDidClick:) fromProtocol:@protocol(uexVideoPlayerViewDelegate)]subscribeNext:^(id x) {
         @strongify(self);
         [self close];
     }];
-    [[self rac_willDeallocSignal]subscribeCompleted:^{
+    [[self rac_signalForSelector:@selector(playerViewDidFinishPlaying:) fromProtocol:@protocol(uexVideoPlayerViewDelegate)] subscribeNext:^(id x) {
+        @strongify(self);
+        [self.euexObj callbackJSONWithName:@"onPlayerFinish" object:nil];
+    }];
+    [[self rac_willDeallocSignal] subscribeCompleted:^{
         @strongify(self);
         [self resetConfig];
     }];

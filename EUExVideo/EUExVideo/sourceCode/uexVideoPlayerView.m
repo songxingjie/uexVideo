@@ -282,6 +282,9 @@ static OSSpinLock lock;
          if (!self.isForcedFullScreen) {
              [self exitFullScreen];
          }
+         if (self.delegate && [self.delegate respondsToSelector:@selector(playerViewDidFinishPlaying:)]) {
+             [self.delegate playerViewDidFinishPlaying:self];
+         }
         [self pause];
         [self seekToTime:0];
     }];
@@ -584,8 +587,8 @@ static OSSpinLock lock;
         @weakify(self);
         [[button rac_signalForControlEvents:UIControlEventTouchUpInside].publish.autoconnect subscribeNext:^(id x) {
             @strongify(self);
-            if (self.delegate && [self.delegate respondsToSelector:@selector(playViewCloseButtonDidClick:)]) {
-                [self.delegate playViewCloseButtonDidClick:self];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(playerViewCloseButtonDidClick:)]) {
+                [self.delegate playerViewCloseButtonDidClick:self];
             }else{
                 [self close];
             }

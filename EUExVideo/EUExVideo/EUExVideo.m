@@ -128,20 +128,25 @@
 }
 
 - (void)callbackJSONWithName:(NSString *)name object:(id)obj{
-    NSString *result = @"";
-    NSString *cbStr =@"";
+    NSString *cbStr = @"";
+    NSString *param = nil;
+    
+    
     if ([obj isKindOfClass:[NSNumber class]]) {
-        cbStr = [NSString stringWithFormat:@"if(uexVideo.%@){uexVideo.%@(%@);}",name,name,obj];
-        [EUtility brwView:meBrwView evaluateScript:cbStr];
-        return;
+        param = [obj stringValue];
     }
     
     if ([obj isKindOfClass:[NSString class]]) {
-        result = obj;
-    }else{
-        result = [obj JSONFragment];
+        param = [obj JSONFragment];
     }
-    cbStr = [NSString stringWithFormat:@"if(uexVideo.%@){uexVideo.%@('%@');}",name,name,result];
+    if ([obj isKindOfClass:[NSArray class]] || [obj isKindOfClass:[NSDictionary class]]) {
+        param = [[obj JSONFragment] JSONFragment];
+    }
+    if (!param) {
+        param = @"undefined";
+    }
+    
+    cbStr = [NSString stringWithFormat:@"if(uexVideo.%@){uexVideo.%@(%@);}",name,name,param];
     [EUtility brwView:meBrwView evaluateScript:cbStr];
 }
 

@@ -64,10 +64,13 @@ typedef  NS_ENUM(NSInteger,uexVideoPlayerViewStatus){
 @protocol uexVideoPlayerViewDelegate <NSObject>
 @optional
 
+//播放完成;
+- (void)playerViewDidFinishPlaying:(uexVideoPlayerView *)playerView;
+
 
 //播放器会先暂停并退出全屏,然后调用此回调方法
 //通过此回调处理关闭按钮的点击事件
-- (void)playViewCloseButtonDidClick:(uexVideoPlayerView *)playerView;
+- (void)playerViewCloseButtonDidClick:(uexVideoPlayerView *)playerView;
 
 //进入全屏之后应该禁用AutoRotate 隐藏Status Bar，这些需要rootViewController去处理。
 //在下面2个回调中处理这些事情!
