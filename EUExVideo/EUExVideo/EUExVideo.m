@@ -115,6 +115,7 @@ CGFloat key = info[UEX_VIDEO_KEY_TO_NSSTRING(key)] ? [info[UEX_VIDEO_KEY_TO_NSST
 }
 
 
+
 -(void)clean{
     if (mPlayerObj) {
 		mPlayerObj = nil;
