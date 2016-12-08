@@ -346,7 +346,7 @@
         UISlider *slider = [[UISlider alloc] init];
         slider.translatesAutoresizingMaskIntoConstraints = NO;
         slider.maximumValue = 1;
-        slider.maximumTrackTintColor = [EUtility colorFromHTMLString:@"#4D4D4D4D"];
+        slider.maximumTrackTintColor = [UIColor ac_ColorWithHTMLColorString:@"#4D4D4D4D"];
         
         slider.minimumValue = 0;
         slider.minimumTrackTintColor = [UIColor whiteColor];
@@ -374,7 +374,7 @@
         UIProgressView *progressView = [[UIProgressView alloc]init];
         progressView.translatesAutoresizingMaskIntoConstraints = NO;
         progressView.trackTintColor = [UIColor clearColor];
-        progressView.progressTintColor = [EUtility colorFromHTMLString:@"#99999999"];
+        progressView.progressTintColor = [UIColor ac_ColorWithHTMLColorString:@"#99999999"];
         RAC(progressView,progress) = [RACSignal combineLatest:@[RACObserve(self.player, bufferedDuration),RACObserve(self.player, duration)] reduce:^id(NSNumber *bufferedNumber,NSNumber *totalNumber){
             CGFloat buffered = bufferedNumber.floatValue;
             CGFloat total = totalNumber.floatValue;

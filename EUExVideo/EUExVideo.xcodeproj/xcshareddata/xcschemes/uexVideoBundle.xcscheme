@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "03442C7D18B2338100CEC18D"
-               BuildableName = "libuexVideo.a"
-               BlueprintName = "EUExVideo"
+               BlueprintIdentifier = "DFF131929CC0065422904AC0"
+               BuildableName = "uexVideo.bundle"
+               BlueprintName = "uexVideoBundle"
                ReferencedContainer = "container:EUExVideo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "03442C7D18B2338100CEC18D"
-            BuildableName = "libuexVideo.a"
-            BlueprintName = "EUExVideo"
+            BlueprintIdentifier = "DFF131929CC0065422904AC0"
+            BuildableName = "uexVideo.bundle"
+            BlueprintName = "uexVideoBundle"
             ReferencedContainer = "container:EUExVideo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "03442C7D18B2338100CEC18D"
-            BuildableName = "libuexVideo.a"
-            BlueprintName = "EUExVideo"
+            BlueprintIdentifier = "DFF131929CC0065422904AC0"
+            BuildableName = "uexVideo.bundle"
+            BlueprintName = "uexVideoBundle"
             ReferencedContainer = "container:EUExVideo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

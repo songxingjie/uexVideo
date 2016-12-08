@@ -1,10 +1,10 @@
 /**
  *
- *	@file   	: uexVideoMediaPlayer.h  in EUExVideo Project .
+ *	@file   	: AppCanGlobalObjectGetter.h  in AppCanKit
  *
- *	@author 	: CeriNo.
+ *	@author 	: CeriNo 
  * 
- *	@date   	: Created on 16/3/15.
+ *	@date   	: Created on 16/5/31.
  *
  *	@copyright 	: 2016 The AppCan Open Source Project.
  *
@@ -20,21 +20,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
+ 
 #import <Foundation/Foundation.h>
 
+@protocol AppCanGlobalObjectGetter <NSObject>
 
+- (id<AppCanWebViewEngineObject>)getAppCanRootWebViewEngine;
+- (id<AppCanWidgetObject>)getAppCanMainWidget;
 
-@class EUExVideo;
-@interface uexVideoMediaPlayer : NSObject 
-@property (nonatomic,assign)BOOL isScrollWithWeb;
-@property (nonatomic,assign)BOOL autoStart;
-@property (nonatomic,assign)BOOL forceFullScreen;
-@property (nonatomic,assign)BOOL showCloseButton;
-@property (nonatomic,assign)BOOL showScaleButton;
--(instancetype)initWithEUExVideo:(EUExVideo *)euexObj;
-
-- (void)openWithFrame:(CGRect)frame path:(NSString *)inPath startTime:(CGFloat)startTime;
-
-- (void)close;
 @end

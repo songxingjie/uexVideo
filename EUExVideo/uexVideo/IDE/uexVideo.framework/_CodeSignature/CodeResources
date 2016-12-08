@@ -6,11 +6,7 @@
 	<dict>
 		<key>Info.plist</key>
 		<data>
-		8yIy/vux3ylZuwDtbcUPjn+tJ8U=
-		</data>
-		<key>embedded.mobileprovision</key>
-		<data>
-		VccYRc8+LJpEK2ajGtgIir/pOpk=
+		HknCOT4ixnyzs9VVvPIgNh4F9wA=
 		</data>
 		<key>uexVideo.bundle/brightness@2x.png</key>
 		<data>
@@ -71,17 +67,6 @@
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>embedded.mobileprovision</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			VccYRc8+LJpEK2ajGtgIir/pOpk=
-			</data>
-			<key>hash2</key>
-			<data>
-			ejCBtnGtWqhlrYI4GRjoMJxaexgdSnhjWGPR+Vc9frw=
-			</data>
-		</dict>
 		<key>uexVideo.bundle/brightness@2x.png</key>
 		<dict>
 			<key>hash</key>
@@ -255,6 +240,11 @@
 			<key>weight</key>
 			<real>1100</real>
 		</dict>
+		<key>^Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
+		</dict>
 		<key>^version.plist$</key>
 		<true/>
 	</dict>
@@ -299,6 +289,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^Info\.plist$</key>
 		<dict>

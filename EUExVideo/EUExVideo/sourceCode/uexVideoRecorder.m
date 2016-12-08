@@ -24,7 +24,7 @@
 #import "uexVideoRecorder.h"
 #import "uexVideoAssetExporter.h"
 #import "EUExVideo.h"
-#import "EUtility.h"
+
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AVFoundation/AVFoundation.h>
 @interface uexVideoRecorder()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
@@ -78,11 +78,13 @@
 
 - (void)statRecord{
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        [self.euexObj callbackJSONWithName:@"onRecordFinish" object:@{
-                                                                      @"result":@(2),
-                                                                      @"errorStr":@"camera unavailable"
-                                                                      }];
         
+        NSDictionary *dict = @{
+                               @"result":@(2),
+                               @"errorStr":@"camera unavailable"
+                               };
+        
+        [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexVideo.onRecordFinish" arguments:ACArgsPack(dict.ac_JSONFragment)];
         return;
     }
     
@@ -124,7 +126,7 @@
     
     picker.videoQuality = UIImagePickerControllerQualityTypeIFrame1280x720;
     
-    UIViewController *controller = [EUtility brwCtrl:self.euexObj.meBrwView];
+    UIViewController *controller = [self.euexObj.webViewEngine viewController];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
         controller.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     }
@@ -133,10 +135,14 @@
     
     
      [[self requestRecordRequest]subscribeError:^(NSError *error) {
-         [self.euexObj callbackJSONWithName:@"onRecordFinish" object:@{
-                                                                       @"result":@(2),
-                                                                       @"errorStr":@"request access failed."
-                                                                       }];
+         
+         NSDictionary *dict = @{
+                                @"result":@(2),
+                                @"errorStr":@"request access failed."
+                                };
+         
+         [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexVideo.onRecordFinish" arguments:ACArgsPack(dict.ac_JSONFragment)];
+         
      } completed:^{
          dispatch_async(dispatch_get_main_queue(), ^{
              [controller presentViewController:picker animated:YES completion:nil];
@@ -182,9 +188,9 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
     dispatch_async(dispatch_get_main_queue(), ^{
         [picker dismissViewControllerAnimated:YES completion:^{
-            [self.euexObj callbackJSONWithName:@"onRecordFinish" object:@{
-                                                                          @"result":@(1),
-                                                                          }];
+            NSDictionary *dict = @{@"result":@(1)};
+            [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexVideo.onRecordFinish" arguments:ACArgsPack(dict.ac_JSONFragment)];
+
             self.euexObj.recorder = nil;
         }];
     });
@@ -242,14 +248,17 @@
     NSString *savePath = [self makeSavePath];
     exporter.outputURL = [NSURL fileURLWithPath:savePath];
     [exporter.startExportSignal subscribeNext:^(NSNumber *progress) {
-        [self.euexObj callbackJSONWithName:@"onExportWithProgress" object:progress];
+        [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexVideo.onExportWithProgress" arguments:ACArgsPack(progress)];
     } error:^(NSError *error) {
-        NSLog(@"%@",error.localizedDescription);
-        [self.euexObj callbackJSONWithName:@"onRecordFinish" object:@{
-                                                                      @"result":@(2),
-                                                                      @"errorStr":error.localizedDescription
-                                                                      }];
+        ACLogWarning(@"%@",error.localizedDescription);
+        NSDictionary *dict = @{
+                               @"result":@(2),
+                               @"errorStr":error.localizedDescription
+                               };
+        
+        [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexVideo.onRecordFinish" arguments:ACArgsPack(dict.ac_JSONFragment)];
     } completed:^{
+
         /*
         CGFloat fileSize = -1.0;
         if ([[NSFileManager defaultManager] fileExistsAtPath:savePath]) {
@@ -259,11 +268,13 @@
         }
         NSLog(@"complete! fileSize : %@",@(fileSize));
          */
-        [self.euexObj uexVideoWithOpId:0 dataType:0 data:savePath];
-        [self.euexObj callbackJSONWithName:@"onRecordFinish" object:@{
-                                                                      @"result":@(0),
-                                                                      @"path":savePath
-                                                                      }];
+        [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexVideo.cbRecord" arguments:ACArgsPack(@0,@0,savePath)];
+        NSDictionary *dict = @{
+                               @"result":@(0),
+                               @"path":savePath
+                               };
+        
+        [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexVideo.onRecordFinish" arguments:ACArgsPack(dict.ac_JSONFragment)];
     }];
 }
 

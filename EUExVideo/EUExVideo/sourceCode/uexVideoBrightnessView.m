@@ -50,7 +50,7 @@
     if (self) {
         
         
-        self.backgroundColor = [EUtility colorFromHTMLString:@"#CD9A9A9A"];
+        self.backgroundColor = [UIColor ac_ColorWithHTMLColorString:@"#CD9A9A9A"];
         self.layer.cornerRadius = 10;
         self.layer.masksToBounds = YES;
         
@@ -85,7 +85,7 @@
             }];
             [_progressDots addObject:dotView];
         }
-        progressView.backgroundColor = [EUtility colorFromHTMLString:@"#403835"];
+        progressView.backgroundColor = [UIColor ac_ColorWithHTMLColorString:@"#403835"];
         [self addSubview:progressView];
         [progressView mas_updateConstraints:^(MASConstraintMaker *make) {
             @strongify(self);
@@ -100,7 +100,7 @@
         
         UILabel *titleLabel = [[UILabel alloc]init];
         titleLabel.text = @"亮度";
-        titleLabel.textColor = [EUtility colorFromHTMLString:@"#403835"];
+        titleLabel.textColor = [UIColor ac_ColorWithHTMLColorString:@"#403835"];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.font = [UIFont systemFontOfSize:16];
         [self addSubview:titleLabel];

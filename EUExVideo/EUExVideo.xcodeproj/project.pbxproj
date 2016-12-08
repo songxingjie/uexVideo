@@ -23,6 +23,7 @@
 		4231E3221C993EFC00A72CD0 /* pause@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4231E3161C993EFC00A72CD0 /* pause@3x.png */; };
 		4231E3231C993EFC00A72CD0 /* play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4231E3171C993EFC00A72CD0 /* play@2x.png */; };
 		4231E3241C993EFC00A72CD0 /* play@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4231E3181C993EFC00A72CD0 /* play@3x.png */; };
+		4281C4091DF9017E00BE3D1C /* AppCanKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4281C4081DF9017E00BE3D1C /* AppCanKit.framework */; };
 		42A6E4E51C96699E004F8765 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42A6E4E41C96699E004F8765 /* ReactiveCocoa.framework */; };
 		42A6E4EA1C9681A0004F8765 /* uexVideoAssetExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 42A6E4E91C9681A0004F8765 /* uexVideoAssetExporter.m */; };
 		42A6E4ED1C96A145004F8765 /* uexVideoRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42A6E4EC1C96A145004F8765 /* uexVideoRecorder.m */; };
@@ -66,23 +67,11 @@
 		03442C7E18B2338100CEC18D /* libuexVideo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libuexVideo.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		03442C8118B2338100CEC18D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03442C8518B2338100CEC18D /* EUExVideo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EUExVideo-Prefix.pch"; sourceTree = "<group>"; };
-		03442CA818B233D700CEC18D /* EUExBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExBase.h; sourceTree = "<group>"; };
-		03442CA918B233D700CEC18D /* EUExBaseDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExBaseDefine.h; sourceTree = "<group>"; };
-		03442CAA18B233D700CEC18D /* EUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUtility.h; sourceTree = "<group>"; };
 		03442CAB18B233D700CEC18D /* EUExVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExVideo.h; sourceTree = "<group>"; };
 		03442CAC18B233D700CEC18D /* EUExVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUExVideo.m; sourceTree = "<group>"; };
 		03442CAE18B233D700CEC18D /* MediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayer.h; sourceTree = "<group>"; };
 		03442CAF18B233D700CEC18D /* MediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPlayer.m; sourceTree = "<group>"; };
 		03442CB518B2344100CEC18D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		3CEE404F1C520B64005CD332 /* JSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
-		3CEE40501C520B64005CD332 /* JSONParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSONParser.h; sourceTree = "<group>"; };
-		3CEE40511C520B64005CD332 /* MD5Digest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MD5Digest.h; sourceTree = "<group>"; };
-		3CEE40521C520B64005CD332 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
-		3CEE40531C520B64005CD332 /* NSString+SBJSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
-		3CEE40541C520B64005CD332 /* SBJSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
-		3CEE40551C520B64005CD332 /* SBJsonBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
-		3CEE40561C520B64005CD332 /* SBJsonParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
-		3CEE40571C520B64005CD332 /* SBJsonWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		4231E30D1C993EFC00A72CD0 /* close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close@2x.png"; sourceTree = "<group>"; };
 		4231E30E1C993EFC00A72CD0 /* close@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close@3x.png"; sourceTree = "<group>"; };
 		4231E30F1C993EFC00A72CD0 /* dot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dot@2x.png"; sourceTree = "<group>"; };
@@ -95,6 +84,9 @@
 		4231E3161C993EFC00A72CD0 /* pause@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause@3x.png"; sourceTree = "<group>"; };
 		4231E3171C993EFC00A72CD0 /* play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@2x.png"; sourceTree = "<group>"; };
 		4231E3181C993EFC00A72CD0 /* play@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@3x.png"; sourceTree = "<group>"; };
+		4281C4081DF9017E00BE3D1C /* AppCanKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCanKit.framework; sourceTree = "<group>"; };
+		4281C40B1DF9028900BE3D1C /* ACEBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACEBaseViewController.h; sourceTree = "<group>"; };
+		4281C40C1DF9028900BE3D1C /* WidgetOneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetOneDelegate.h; sourceTree = "<group>"; };
 		42A6E4E41C96699E004F8765 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveCocoa.framework; sourceTree = "<group>"; };
 		42A6E4E81C9681A0004F8765 /* uexVideoAssetExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uexVideoAssetExporter.h; sourceTree = "<group>"; };
 		42A6E4E91C9681A0004F8765 /* uexVideoAssetExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uexVideoAssetExporter.m; sourceTree = "<group>"; };
@@ -114,8 +106,6 @@
 		42A6E5281C97F3F3004F8765 /* uexVideoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uexVideoHelper.m; sourceTree = "<group>"; };
 		42A6E52A1C97F7D4004F8765 /* brightness@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brightness@2x.png"; sourceTree = "<group>"; };
 		42A6E52B1C97F7D4004F8765 /* brightness@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brightness@3x.png"; sourceTree = "<group>"; };
-		42BA31C11C9BF2320011CEB8 /* WidgetOneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetOneDelegate.h; sourceTree = "<group>"; };
-		42BA31C21C9BF2610011CEB8 /* ACEBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACEBaseViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +117,7 @@
 				42A6E4E51C96699E004F8765 /* ReactiveCocoa.framework in Frameworks */,
 				42A6E5101C97D41D004F8765 /* Masonry.framework in Frameworks */,
 				03442C8218B2338100CEC18D /* Foundation.framework in Frameworks */,
+				4281C4091DF9017E00BE3D1C /* AppCanKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,8 +162,8 @@
 		03442C8318B2338100CEC18D /* EUExVideo */ = {
 			isa = PBXGroup;
 			children = (
-				3CEE404E1C520B64005CD332 /* JSON */,
-				03442CA718B233D700CEC18D /* engineHeader */,
+				4281C40A1DF9028900BE3D1C /* engineHeader */,
+				4281C4081DF9017E00BE3D1C /* AppCanKit.framework */,
 				03442CAB18B233D700CEC18D /* EUExVideo.h */,
 				03442CAC18B233D700CEC18D /* EUExVideo.m */,
 				03442CAD18B233D700CEC18D /* sourceCode */,
@@ -187,18 +178,6 @@
 				03442C8518B2338100CEC18D /* EUExVideo-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		03442CA718B233D700CEC18D /* engineHeader */ = {
-			isa = PBXGroup;
-			children = (
-				42BA31C11C9BF2320011CEB8 /* WidgetOneDelegate.h */,
-				42BA31C21C9BF2610011CEB8 /* ACEBaseViewController.h */,
-				03442CA818B233D700CEC18D /* EUExBase.h */,
-				03442CA918B233D700CEC18D /* EUExBaseDefine.h */,
-				03442CAA18B233D700CEC18D /* EUtility.h */,
-			);
-			path = engineHeader;
 			sourceTree = "<group>";
 		};
 		03442CAD18B233D700CEC18D /* sourceCode */ = {
@@ -226,20 +205,13 @@
 			path = sourceCode;
 			sourceTree = "<group>";
 		};
-		3CEE404E1C520B64005CD332 /* JSON */ = {
+		4281C40A1DF9028900BE3D1C /* engineHeader */ = {
 			isa = PBXGroup;
 			children = (
-				3CEE404F1C520B64005CD332 /* JSON.h */,
-				3CEE40501C520B64005CD332 /* JSONParser.h */,
-				3CEE40511C520B64005CD332 /* MD5Digest.h */,
-				3CEE40521C520B64005CD332 /* NSObject+SBJSON.h */,
-				3CEE40531C520B64005CD332 /* NSString+SBJSON.h */,
-				3CEE40541C520B64005CD332 /* SBJSON.h */,
-				3CEE40551C520B64005CD332 /* SBJsonBase.h */,
-				3CEE40561C520B64005CD332 /* SBJsonParser.h */,
-				3CEE40571C520B64005CD332 /* SBJsonWriter.h */,
+				4281C40B1DF9028900BE3D1C /* ACEBaseViewController.h */,
+				4281C40C1DF9028900BE3D1C /* WidgetOneDelegate.h */,
 			);
-			path = JSON;
+			path = engineHeader;
 			sourceTree = "<group>";
 		};
 		8B6989A4963D0A7A9DAA2020 /* uexVideoBundle */ = {
@@ -307,7 +279,7 @@
 		03442C7618B2338100CEC18D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = zhengcuan;
 			};
 			buildConfigurationList = 03442C7918B2338100CEC18D /* Build configuration list for PBXProject "EUExVideo" */;
@@ -480,6 +452,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/EUExVideo/sourceCode",
+					"$(PROJECT_DIR)/EUExVideo",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EUExVideo/EUExVideo-Prefix.pch";
@@ -502,6 +475,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/EUExVideo/sourceCode",
+					"$(PROJECT_DIR)/EUExVideo",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EUExVideo/EUExVideo-Prefix.pch";

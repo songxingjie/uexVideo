@@ -23,11 +23,11 @@
 
 #import "uexVideoMediaPlayer.h"
 #import "EUExVideo.h"
-#import "EUtility.h"
+
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import "JSON.h"
-#import "EUExBaseDefine.h"
+
+
 #import "uexVideoPlayerView.h"
 #import "WidgetOneDelegate.h"
 #import "ACEBaseViewController.h"
@@ -93,7 +93,8 @@
     }];
     [[self rac_signalForSelector:@selector(playerViewDidFinishPlaying:) fromProtocol:@protocol(uexVideoPlayerViewDelegate)] subscribeNext:^(id x) {
         @strongify(self);
-        [self.euexObj callbackJSONWithName:@"onPlayerFinish" object:nil];
+        [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexVideo.onPlayerFinish" arguments:nil];
+
     }];
     [[self rac_willDeallocSignal] subscribeCompleted:^{
         @strongify(self);
@@ -104,9 +105,10 @@
     [self.playerView setCloseButtonHidden:!self.showCloseButton];
     
     if (self.isScrollWithWeb) {
-        [EUtility brwView:self.euexObj.meBrwView addSubviewToScrollView:self.playerView];
+        [[self.euexObj.webViewEngine webScrollView]addSubview:self.playerView];
+
     }else{
-        [EUtility brwView:self.euexObj.meBrwView addSubview:self.playerView];
+        [[self.euexObj.webViewEngine webView]addSubview:self.playerView];
     }
     if (self.forceFullScreen) {
         [self.playerView forceFullScreen];
@@ -118,9 +120,9 @@
     
     [RACObserve(self.playerView, status).distinctUntilChanged subscribeNext:^(id x) {
         @strongify(self);
-        [self.euexObj callbackJSONWithName:@"onPlayerStatusChange" object:@{
-                                                                            @"status":x
-                                                                            }];
+        NSDictionary *dict = @{@"status":x};
+        [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexVideo.onPlayerStatusChange" arguments:ACArgsPack(dict.ac_JSONFragment)];
+
     }];
 }
 
@@ -136,10 +138,11 @@
         return;
     }
     [self.playerView close];
-    [self.euexObj callbackJSONWithName:@"onPlayerClose" object:@{
-                                                                 @"src":self.inPath,
-                                                                 @"currentTime":@((NSInteger)self.playerView.currentTime)
-                                                                 }];
+    NSDictionary *dict = @{
+                           @"src":self.inPath,
+                           @"currentTime":@((NSInteger)self.playerView.currentTime)
+                           };
+    [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexVideo.onPlayerClose" arguments:ACArgsPack(dict.ac_JSONFragment)];
     [self.playerView removeFromSuperview];
     [self resetConfig];
     self.playerView = nil;

@@ -9,8 +9,7 @@
 
 #import "MediaPlayer.h"
 #import "EUExVideo.h"
-#import "EUtility.h"
-#import "EUExBaseDefine.h"
+
 
 @implementation MediaPlayer
 
@@ -27,16 +26,16 @@
     }
     else {
         if (![[NSFileManager defaultManager] fileExistsAtPath:inPath]) {
-            [_euexObj jsFailedWithOpId:0 errorCode:1210102 errorDes:UEX_ERROR_DESCRIBE_FILE_EXIST];
+            //[_euexObj jsFailedWithOpId:0 errorCode:1210102 errorDes:UEX_ERROR_DESCRIBE_FILE_EXIST];
             return;
         }
         movieURL = [NSURL fileURLWithPath:inPath];
     }
     if (movieURL&&[movieURL scheme])
     {
-        PluginLog(@"movie start");
+
         if ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 3.2){
-            PluginLog(@"verson >3.2");
+
             MPMoviePlayerViewController *playerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:movieURL];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(myMovieViewFinishedCallback:)
                                                          name:MPMoviePlayerPlaybackDidFinishNotification
@@ -45,7 +44,8 @@
             [playerViewController.moviePlayer prepareToPlay];
             [playerViewController.moviePlayer play];
             [playerViewController.moviePlayer setFullscreen:YES];
-            [EUtility brwView:_euexObj.meBrwView presentModalViewController:playerViewController animated:YES];
+            [[self.euexObj.webViewEngine viewController]presentViewController:playerViewController animated:YES completion:nil];
+
             //[playerViewController release];
         }else {
             //如果系统版本在4.0以前，用下面这个
@@ -58,7 +58,7 @@
             [MPPlayer play];
         }
     }else{
-        [_euexObj jsFailedWithOpId:0 errorCode:1210103 errorDes:UEX_ERROR_DESCRIBE_FILE_FORMAT];
+        //[_euexObj jsFailedWithOpId:0 errorCode:1210103 errorDes:UEX_ERROR_DESCRIBE_FILE_FORMAT];
     }
 }
 
