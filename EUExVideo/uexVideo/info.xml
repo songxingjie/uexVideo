@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <uexplugins>
-  	<plugin uexName="uexVideo" version="4.0.0" build="0">
-    	<info>0:视频功能插件</info>
+  	<plugin uexName="uexVideo" version="4.0.1" build="1">
+        <info>1:修改视频播放画面显示不全、竖屏跳转横屏会卡在原位置</info>
+    	<build>0:视频功能插件</build>
 	</plugin>
 </uexplugins>
 

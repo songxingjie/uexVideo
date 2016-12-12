@@ -168,7 +168,7 @@ static OSSpinLock lock;
 
         [[UIApplication sharedApplication].keyWindow addSubview:self];
         self.frame = [UIScreen mainScreen].bounds;
-        
+        [self layoutIfNeeded];
         
         //CGRect rect = [[UIApplication sharedApplication].keyWindow convertRect:[UIScreen mainScreen].bounds toView:self.superview];
         //self.frame = rect;
@@ -208,11 +208,11 @@ static OSSpinLock lock;
     self.playerItem  = [AVPlayerItem playerItemWithURL:self.url];
     self.player      = [AVPlayer playerWithPlayerItem:self.playerItem];
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-    if([self.playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]){
-        self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    }else{
+//    if([self.playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]){
+//        self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+//    }else{
         self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    }
+//    }
     [self.layer insertSublayer:self.playerLayer atIndex:0];
     @weakify(self);
     RAC(self,duration) = [RACObserve(self.playerItem, duration) map:^id(id x) {
