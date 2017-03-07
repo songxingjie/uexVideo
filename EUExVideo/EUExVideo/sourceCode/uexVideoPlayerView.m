@@ -582,7 +582,9 @@ static OSSpinLock lock;
 - (UIButton *)closeButton{
     if (!_closeButton) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button setBackgroundImage:UEX_VIDEO_IMAGE_NAMED(@"close") forState:UIControlStateNormal];
+        
+        [button setImage:UEX_VIDEO_IMAGE_NAMED(@"close") forState:UIControlStateNormal];
+        [button setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 30, 30)];
         [self addSubview:button];
         @weakify(self);
         [[button rac_signalForControlEvents:UIControlEventTouchUpInside].publish.autoconnect subscribeNext:^(id x) {
@@ -597,8 +599,8 @@ static OSSpinLock lock;
             @strongify(self);
             make.top.equalTo(self.mas_top).with.offset(5);
             make.left.equalTo(self.mas_left).with.offset(5);
-            make.height.equalTo(@30);
-            make.width.equalTo(@30);
+            make.height.equalTo(@60);
+            make.width.equalTo(@60);
         }];
         _closeButton = button;
     }
