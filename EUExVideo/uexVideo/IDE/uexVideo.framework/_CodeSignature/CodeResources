@@ -6,15 +6,23 @@
 	<dict>
 		<key>Info.plist</key>
 		<data>
-		HknCOT4ixnyzs9VVvPIgNh4F9wA=
+		N/Agk6OLVsrEsiOtQhcbngNLl3I=
+		</data>
+		<key>uexVideo.bundle/brightness.png</key>
+		<data>
+		fh7RZSUEqz0Ii44mAyAfXm6QkuM=
 		</data>
 		<key>uexVideo.bundle/brightness@2x.png</key>
 		<data>
-		qvvsb3tE1l+nOCoFfVRWccGfroU=
+		QntIO70jBRRSGKeuGFDPAgA8jYc=
 		</data>
 		<key>uexVideo.bundle/brightness@3x.png</key>
 		<data>
 		8iOJDHogWT+rTHxUz9DN8lCAC+4=
+		</data>
+		<key>uexVideo.bundle/close.png</key>
+		<data>
+		A4xKsi0nZ5m8AVy2Fo2S0duKFoA=
 		</data>
 		<key>uexVideo.bundle/close@2x.png</key>
 		<data>
@@ -24,6 +32,10 @@
 		<data>
 		uigkIrPkhE0YdPhfbio4BKJblTY=
 		</data>
+		<key>uexVideo.bundle/dot.png</key>
+		<data>
+		KAlKavjY22dmxKUf64yftSLB6RQ=
+		</data>
 		<key>uexVideo.bundle/dot@2x.png</key>
 		<data>
 		pq6cDLQ573FulCH/7Aaeto4tNAM=
@@ -31,6 +43,10 @@
 		<key>uexVideo.bundle/dot@3x.png</key>
 		<data>
 		W10RHjusAYiY6nbi++GNWM7ln5Q=
+		</data>
+		<key>uexVideo.bundle/fullscreen.png</key>
+		<data>
+		dGIkBPlLK/z37i72y+m4dVf6JTQ=
 		</data>
 		<key>uexVideo.bundle/fullscreen@2x.png</key>
 		<data>
@@ -40,6 +56,10 @@
 		<data>
 		z0941wc5VQKqmTtJ2Kgr94JO/VA=
 		</data>
+		<key>uexVideo.bundle/nonfullscreen.png</key>
+		<data>
+		1brMjizcJTK0fQKcybYfc56IpCg=
+		</data>
 		<key>uexVideo.bundle/nonfullscreen@2x.png</key>
 		<data>
 		hl3aITb5ZK51PO8fqdXL/Zw5I70=
@@ -48,6 +68,10 @@
 		<data>
 		1g4zi6cTxjxVKdDgWhuT9F3cI6c=
 		</data>
+		<key>uexVideo.bundle/pause.png</key>
+		<data>
+		8oh7KP8HJ4gtJqgABZQEPG5fOk0=
+		</data>
 		<key>uexVideo.bundle/pause@2x.png</key>
 		<data>
 		llRqehmUD6HYfxmLeD2Dh520r/k=
@@ -55,6 +79,10 @@
 		<key>uexVideo.bundle/pause@3x.png</key>
 		<data>
 		vEmVDKiDFdkkfnurd+AiUSNTvd8=
+		</data>
+		<key>uexVideo.bundle/play.png</key>
+		<data>
+		2fTXtbLsVcKZeEaNrghLWGMAEQU=
 		</data>
 		<key>uexVideo.bundle/play@2x.png</key>
 		<data>
@@ -67,15 +95,26 @@
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>uexVideo.bundle/brightness.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			fh7RZSUEqz0Ii44mAyAfXm6QkuM=
+			</data>
+			<key>hash2</key>
+			<data>
+			TH89jCs2u2Kh2YEjQo7HnsCwqlR1GxeZuxe7wkEu7DM=
+			</data>
+		</dict>
 		<key>uexVideo.bundle/brightness@2x.png</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			qvvsb3tE1l+nOCoFfVRWccGfroU=
+			QntIO70jBRRSGKeuGFDPAgA8jYc=
 			</data>
 			<key>hash2</key>
 			<data>
-			zZrpWOtC66fMbNuiNGub2Y9HQHjSboEaZSiHXDf/tlQ=
+			CR4w4kABfYgwhoYg9quf5RmN4+5V4hOCf+wNlZYbqv0=
 			</data>
 		</dict>
 		<key>uexVideo.bundle/brightness@3x.png</key>
@@ -87,6 +126,17 @@
 			<key>hash2</key>
 			<data>
 			GDEy8Z2KXfj4T3/Yaibo7sCs1RNHw481b4nca0+O440=
+			</data>
+		</dict>
+		<key>uexVideo.bundle/close.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			A4xKsi0nZ5m8AVy2Fo2S0duKFoA=
+			</data>
+			<key>hash2</key>
+			<data>
+			u2WWbuzXmvHQd6U69GthllNKHxWYwM36mmSGzSAeTRs=
 			</data>
 		</dict>
 		<key>uexVideo.bundle/close@2x.png</key>
@@ -111,6 +161,17 @@
 			X7UC8NoxJm8GgkFa6kV5FjBHetDt2PW3fuh1SW8+TOE=
 			</data>
 		</dict>
+		<key>uexVideo.bundle/dot.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			KAlKavjY22dmxKUf64yftSLB6RQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			LM+FfWhQx3fgxXKF7KZf/LcbgaxClcqDlYrLy9qZTH0=
+			</data>
+		</dict>
 		<key>uexVideo.bundle/dot@2x.png</key>
 		<dict>
 			<key>hash</key>
@@ -131,6 +192,17 @@
 			<key>hash2</key>
 			<data>
 			iYev5zeptLG5Yrq9x07mdzM3y5K8ShIjm/lMnAZnrgE=
+			</data>
+		</dict>
+		<key>uexVideo.bundle/fullscreen.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			dGIkBPlLK/z37i72y+m4dVf6JTQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			jwpEgwj0enTL6K+xllApHLpHVCtgEmP565cP9lxgX6U=
 			</data>
 		</dict>
 		<key>uexVideo.bundle/fullscreen@2x.png</key>
@@ -155,6 +227,17 @@
 			dWeDzvBoZddjK02DO3lztIdZG5NdT6wDzNBSA76yIms=
 			</data>
 		</dict>
+		<key>uexVideo.bundle/nonfullscreen.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			1brMjizcJTK0fQKcybYfc56IpCg=
+			</data>
+			<key>hash2</key>
+			<data>
+			u87hZMudIiUQgrT8d5HOWfDdyZORw0jPfmn2i1UndIE=
+			</data>
+		</dict>
 		<key>uexVideo.bundle/nonfullscreen@2x.png</key>
 		<dict>
 			<key>hash</key>
@@ -177,6 +260,17 @@
 			S4chWeeNzy5k5CW7z+9m+D0803IvFgPbjsw5KgIoV40=
 			</data>
 		</dict>
+		<key>uexVideo.bundle/pause.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			8oh7KP8HJ4gtJqgABZQEPG5fOk0=
+			</data>
+			<key>hash2</key>
+			<data>
+			BVb9b+znbr1XIKdyrBnVjMZqt9exU7CjjfaJnsNKQy0=
+			</data>
+		</dict>
 		<key>uexVideo.bundle/pause@2x.png</key>
 		<dict>
 			<key>hash</key>
@@ -197,6 +291,17 @@
 			<key>hash2</key>
 			<data>
 			+gUjsFylkt7Qdpb6Y4NEl+jtdfElBmDz8Ejm4uUiv3o=
+			</data>
+		</dict>
+		<key>uexVideo.bundle/play.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			2fTXtbLsVcKZeEaNrghLWGMAEQU=
+			</data>
+			<key>hash2</key>
+			<data>
+			3hJlJImcehEN9NvuqlUXRryD9N/Sep2GZvOjqWj9f7Y=
 			</data>
 		</dict>
 		<key>uexVideo.bundle/play@2x.png</key>

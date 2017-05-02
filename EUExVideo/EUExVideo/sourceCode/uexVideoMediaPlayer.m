@@ -44,11 +44,12 @@
     self = [super init];
     if (self) {
         _euexObj = euexObj;
+
     }
     return self;
 }
 
-- (void)openWithFrame:(CGRect)frame path:(NSString *)inPath startTime:(CGFloat)startTime {
+- (void)openWithFrame:(CGRect)frame path:(NSString *)inPath{
     
     inPath = [inPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     self.inPath = inPath;
@@ -96,6 +97,9 @@
         [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexVideo.onPlayerFinish" arguments:nil];
 
     }];
+    [[[self rac_signalForSelector:@selector(playerViewDidReachEndTime:) fromProtocol:@protocol(uexVideoPlayerViewDelegate)] throttle:0.3] subscribeNext:^(id x) {
+        [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexVideo.onPlayerEndTime" arguments:nil];
+    }];
     [[self rac_willDeallocSignal] subscribeCompleted:^{
         @strongify(self);
         [self resetConfig];
@@ -113,10 +117,14 @@
     if (self.forceFullScreen) {
         [self.playerView forceFullScreen];
     }
-    [self.playerView seekToTime:startTime];
+    [self.playerView seekToTime:self.startTime];
     if (self.autoStart) {
         [self.playerView playWhenPrepared];
     }
+    if (self.endTime > 0) {
+        self.playerView.endTime = self.endTime;
+    }
+    
     
     [RACObserve(self.playerView, status).distinctUntilChanged subscribeNext:^(id x) {
         @strongify(self);

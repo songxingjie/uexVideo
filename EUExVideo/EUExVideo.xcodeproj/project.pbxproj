@@ -23,8 +23,9 @@
 		4231E3221C993EFC00A72CD0 /* pause@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4231E3161C993EFC00A72CD0 /* pause@3x.png */; };
 		4231E3231C993EFC00A72CD0 /* play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4231E3171C993EFC00A72CD0 /* play@2x.png */; };
 		4231E3241C993EFC00A72CD0 /* play@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4231E3181C993EFC00A72CD0 /* play@3x.png */; };
+		4234ABD21EB828F900270809 /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4234ABD11EB828F900270809 /* ReactiveObjC.framework */; };
+		4234ABD41EB8290600270809 /* ReactiveObjC.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4234ABD11EB828F900270809 /* ReactiveObjC.framework */; };
 		4281C4091DF9017E00BE3D1C /* AppCanKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4281C4081DF9017E00BE3D1C /* AppCanKit.framework */; };
-		42A6E4E51C96699E004F8765 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42A6E4E41C96699E004F8765 /* ReactiveCocoa.framework */; };
 		42A6E4EA1C9681A0004F8765 /* uexVideoAssetExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 42A6E4E91C9681A0004F8765 /* uexVideoAssetExporter.m */; };
 		42A6E4ED1C96A145004F8765 /* uexVideoRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42A6E4EC1C96A145004F8765 /* uexVideoRecorder.m */; };
 		42A6E4F01C97ADB2004F8765 /* uexVideoMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 42A6E4EF1C97ADB2004F8765 /* uexVideoMediaPlayer.m */; };
@@ -42,7 +43,6 @@
 		42B3D46E1E6E9E2B00F215B3 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 42B3D4671E6E9E2B00F215B3 /* play.png */; };
 		42B3D46F1E6E9E2B00F215B3 /* dot.png in Resources */ = {isa = PBXBuildFile; fileRef = 42B3D4681E6E9E2B00F215B3 /* dot.png */; };
 		42B3D4701E6E9E2B00F215B3 /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 42B3D4691E6E9E2B00F215B3 /* pause.png */; };
-		42BA31E21C9CF3A00011CEB8 /* ReactiveCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 42A6E4E41C96699E004F8765 /* ReactiveCocoa.framework */; };
 		42BA31E31C9CF3A40011CEB8 /* Masonry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 42A6E50F1C97D41D004F8765 /* Masonry.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,7 +64,16 @@
 			dstSubfolderSpec = 16;
 			files = (
 				42BA31E31C9CF3A40011CEB8 /* Masonry.framework in CopyFiles */,
-				42BA31E21C9CF3A00011CEB8 /* ReactiveCocoa.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4234ABD31EB828FE00270809 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = embed;
+			dstSubfolderSpec = 16;
+			files = (
+				4234ABD41EB8290600270809 /* ReactiveObjC.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,10 +100,10 @@
 		4231E3161C993EFC00A72CD0 /* pause@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause@3x.png"; sourceTree = "<group>"; };
 		4231E3171C993EFC00A72CD0 /* play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@2x.png"; sourceTree = "<group>"; };
 		4231E3181C993EFC00A72CD0 /* play@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@3x.png"; sourceTree = "<group>"; };
+		4234ABD11EB828F900270809 /* ReactiveObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveObjC.framework; sourceTree = "<group>"; };
 		4281C4081DF9017E00BE3D1C /* AppCanKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCanKit.framework; sourceTree = "<group>"; };
 		4281C40B1DF9028900BE3D1C /* ACEBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACEBaseViewController.h; sourceTree = "<group>"; };
 		4281C40C1DF9028900BE3D1C /* WidgetOneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetOneDelegate.h; sourceTree = "<group>"; };
-		42A6E4E41C96699E004F8765 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveCocoa.framework; sourceTree = "<group>"; };
 		42A6E4E81C9681A0004F8765 /* uexVideoAssetExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uexVideoAssetExporter.h; sourceTree = "<group>"; };
 		42A6E4E91C9681A0004F8765 /* uexVideoAssetExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uexVideoAssetExporter.m; sourceTree = "<group>"; };
 		42A6E4EB1C96A145004F8765 /* uexVideoRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uexVideoRecorder.h; sourceTree = "<group>"; };
@@ -128,8 +137,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				03442CB618B2344100CEC18D /* UIKit.framework in Frameworks */,
-				42A6E4E51C96699E004F8765 /* ReactiveCocoa.framework in Frameworks */,
 				42A6E5101C97D41D004F8765 /* Masonry.framework in Frameworks */,
+				4234ABD21EB828F900270809 /* ReactiveObjC.framework in Frameworks */,
 				03442C8218B2338100CEC18D /* Foundation.framework in Frameworks */,
 				4281C4091DF9017E00BE3D1C /* AppCanKit.framework in Frameworks */,
 			);
@@ -197,8 +206,8 @@
 		03442CAD18B233D700CEC18D /* sourceCode */ = {
 			isa = PBXGroup;
 			children = (
+				4234ABD11EB828F900270809 /* ReactiveObjC.framework */,
 				42A6E50F1C97D41D004F8765 /* Masonry.framework */,
-				42A6E4E41C96699E004F8765 /* ReactiveCocoa.framework */,
 				03442CAE18B233D700CEC18D /* MediaPlayer.h */,
 				03442CAF18B233D700CEC18D /* MediaPlayer.m */,
 				42A6E4E81C9681A0004F8765 /* uexVideoAssetExporter.h */,
@@ -266,6 +275,7 @@
 				03442C7A18B2338100CEC18D /* Sources */,
 				03442C7B18B2338100CEC18D /* Frameworks */,
 				03442C7C18B2338100CEC18D /* CopyFiles */,
+				4234ABD31EB828FE00270809 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -300,7 +310,7 @@
 		03442C7618B2338100CEC18D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = zhengcuan;
 			};
 			buildConfigurationList = 03442C7918B2338100CEC18D /* Build configuration list for PBXProject "EUExVideo" */;

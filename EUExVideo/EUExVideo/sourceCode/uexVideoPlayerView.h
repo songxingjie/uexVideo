@@ -38,11 +38,11 @@ typedef  NS_ENUM(NSInteger,uexVideoPlayerViewStatus){
 //以下这些只读参数都可用于KVO
 @property (nonatomic,assign,readonly)BOOL isFullScreen;//当前是否是全屏模式
 @property (nonatomic,assign,readonly)BOOL isPlaying;//当前是否正在播放
-@property (nonatomic,assign,readonly)CGFloat currentTime;//当前播放时间
-@property (nonatomic,assign,readonly)CGFloat duration;//总播放时长
-@property (nonatomic,assign,readonly)CGFloat bufferedDuration;//已缓冲时长
+@property (nonatomic,assign,readonly)NSTimeInterval currentTime;//当前播放时间
+@property (nonatomic,assign,readonly)NSTimeInterval duration;//总播放时长
+@property (nonatomic,assign,readonly)NSTimeInterval bufferedDuration;//已缓冲时长
 @property (nonatomic,assign,readonly)uexVideoPlayerViewStatus status;//当前状态
-
+@property (nonatomic,assign)NSTimeInterval endTime;
 
 @property (nonatomic,weak)id<uexVideoPlayerViewDelegate> delegate;
 
@@ -51,7 +51,7 @@ typedef  NS_ENUM(NSInteger,uexVideoPlayerViewStatus){
 
 - (instancetype)initWithFrame:(CGRect)frame URL:(NSURL *)url;
 
-- (void)seekToTime:(CGFloat)time;
+- (void)seekToTime:(NSTimeInterval)time;
 - (void)setCloseButtonHidden:(BOOL)isHidden;
 - (void)setFullScreenBottonHidden:(BOOL)isHidden;
 - (void)forceFullScreen;//进入全屏并且隐藏缩放按钮
@@ -77,7 +77,8 @@ typedef  NS_ENUM(NSInteger,uexVideoPlayerViewStatus){
 - (void)playerViewDidEnterFullScreen:(uexVideoPlayerView *)playerView;
 - (void)playerViewWillExitFullScreen:(uexVideoPlayerView *)playerView;
 
-
+//time boundary监听
+- (void)playerViewDidReachEndTime:(uexVideoPlayerView *)playerView;
 @end
 
 

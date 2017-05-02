@@ -23,7 +23,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+
 
 @interface uexVideoAssetExporter : NSObject
 

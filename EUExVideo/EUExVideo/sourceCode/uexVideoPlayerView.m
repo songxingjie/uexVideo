@@ -37,7 +37,7 @@
 @property (nonatomic,strong)UIActivityIndicatorView *activityIndicator;
 @property (nonatomic,strong)uexVideoPlayerMaskView *maskView;
 @property (nonatomic,assign,readwrite)uexVideoPlayerViewStatus status;
-@property (nonatomic,assign,readwrite)CGFloat currentTime;
+@property (nonatomic,assign,readwrite)NSTimeInterval currentTime;
 @property (nonatomic,assign,readwrite)BOOL isFullScreen;
 @property (nonatomic,assign,readwrite)BOOL isPlaying;
 @property (nonatomic,assign)BOOL isPausedByUser;
@@ -231,8 +231,16 @@ static OSSpinLock lock;
     [[RACSignal interval:0.2 onScheduler:[RACScheduler mainThreadScheduler]].repeat
      subscribeNext:^(id x) {//更新currentTime 间隔为0.2s
          @strongify(self);
-        CMTime time = self.player.currentItem.currentTime;
-        self.currentTime = (CGFloat)time.value / (CGFloat)time.timescale;
+         CMTime time = [self.player currentTime];
+         self.currentTime = (NSTimeInterval)time.value / (NSTimeInterval)time.timescale;
+         if (self.endTime > 0 && self.currentTime >= self.endTime) {
+             [self pause];
+             [self seekToTime:0];
+             if (self.delegate && [self.delegate respondsToSelector:@selector(playerViewDidReachEndTime:)]) {
+                 [self.delegate playerViewDidReachEndTime:self];
+             }
+         }
+         
     }];
     [RACObserve(self.playerItem, status)
      subscribeNext:^(id x) {
@@ -482,12 +490,12 @@ static OSSpinLock lock;
     }}]
 */
 
-- (void)seekToTime:(CGFloat)time{
-    NSInteger seconds = (NSInteger)nearbyintf(time);
-    CMTime t = CMTimeMake(seconds, 1);
+- (void)seekToTime:(NSTimeInterval)time{
+    CMTime t = CMTimeMakeWithSeconds(time, NSEC_PER_SEC);
     CMTime accuracy = CMTimeMake(1, 2);//精度为0.5s
     [self.playerItem seekToTime:t toleranceBefore:accuracy toleranceAfter:accuracy];
 }
+
 
 - (void)rotateToOrientation:(UIInterfaceOrientation)orientation{
     SEL selector = NSSelectorFromString([uexVideoHelper getSecretStringByKey:kUexVideoOrientationKey]);

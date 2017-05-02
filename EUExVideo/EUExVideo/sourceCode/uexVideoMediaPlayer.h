@@ -26,7 +26,9 @@
 
 
 @class EUExVideo;
-@interface uexVideoMediaPlayer : NSObject 
+@interface uexVideoMediaPlayer : NSObject
+@property (nonatomic,assign)NSTimeInterval startTime;
+@property (nonatomic,assign)NSTimeInterval endTime;
 @property (nonatomic,assign)BOOL isScrollWithWeb;
 @property (nonatomic,assign)BOOL autoStart;
 @property (nonatomic,assign)BOOL forceFullScreen;
@@ -34,7 +36,7 @@
 @property (nonatomic,assign)BOOL showScaleButton;
 -(instancetype)initWithEUExVideo:(EUExVideo *)euexObj;
 
-- (void)openWithFrame:(CGRect)frame path:(NSString *)inPath startTime:(CGFloat)startTime;
+- (void)openWithFrame:(CGRect)frame path:(NSString *)inPath;
 
 - (void)close;
 @end

@@ -22,7 +22,8 @@ BOOL key = info[UEX_VIDEO_KEY_TO_NSSTRING(key)] ? [info[UEX_VIDEO_KEY_TO_NSSTRIN
 
 #define UEX_VIDEO_GET_FLOAT_VALUE(dict,key,defaultValue) \
 CGFloat key = info[UEX_VIDEO_KEY_TO_NSSTRING(key)] ? [info[UEX_VIDEO_KEY_TO_NSSTRING(key)] floatValue] : defaultValue;
-
+#define UEX_VIDEO_GET_DOUBLE_VALUE(dict,key,defaultValue) \
+NSTimeInterval key = info[UEX_VIDEO_KEY_TO_NSSTRING(key)] ? [info[UEX_VIDEO_KEY_TO_NSSTRING(key)] doubleValue] : defaultValue;
 
 
 @implementation EUExVideo
@@ -40,14 +41,13 @@ CGFloat key = info[UEX_VIDEO_KEY_TO_NSSTRING(key)] ? [info[UEX_VIDEO_KEY_TO_NSST
 
 -(void)open:(NSMutableArray *)inArguments {
     ACArgsUnpack(NSString *inPath) = inArguments;
-    if (inPath) {
-        mPlayerObj = [[MediaPlayer alloc] init];
-        [mPlayerObj initWithEuex:self];
-        NSString *absPath = [super absPath:inPath];
-        [mPlayerObj open:absPath];
-    }else {
-       //[self jsFailedWithOpId:0 errorCode:1210101 errorDes:UEX_ERROR_DESCRIBE_ARGS];
-    }
+    UEX_PARAM_GUARD_NOT_NIL(inPath);
+    
+    mPlayerObj = [[MediaPlayer alloc] init];
+    [mPlayerObj initWithEuex:self];
+    NSString *absPath = [super absPath:inPath];
+    [mPlayerObj open:absPath];
+    
 }
 
 
@@ -55,11 +55,10 @@ CGFloat key = info[UEX_VIDEO_KEY_TO_NSSTRING(key)] ? [info[UEX_VIDEO_KEY_TO_NSST
     ACArgsUnpack(NSDictionary *info) = inArguments;
     
     NSString *path = stringArg(info[@"src"]);
-    if (!path) {
-        return;
-    }
+    UEX_PARAM_GUARD_NOT_NIL(path);
     
-    UEX_VIDEO_GET_FLOAT_VALUE(info, startTime, 0);
+    UEX_VIDEO_GET_DOUBLE_VALUE(info, startTime, 0);
+    UEX_VIDEO_GET_DOUBLE_VALUE(info, endTime, 0);
     UEX_VIDEO_GET_BOOLEAN_VALUE(info,autoStart,NO);
     UEX_VIDEO_GET_BOOLEAN_VALUE(info,forceFullScreen,NO);
     UEX_VIDEO_GET_BOOLEAN_VALUE(info,showCloseButton,NO);
@@ -71,13 +70,15 @@ CGFloat key = info[UEX_VIDEO_KEY_TO_NSSTRING(key)] ? [info[UEX_VIDEO_KEY_TO_NSST
     UEX_VIDEO_GET_BOOLEAN_VALUE(info,scrollWithWeb,NO);
     
     self.player = [[uexVideoMediaPlayer alloc]initWithEUExVideo:self];
-
+    
     self.player.autoStart = autoStart;
     self.player.forceFullScreen = forceFullScreen;
     self.player.isScrollWithWeb = scrollWithWeb;
     self.player.showCloseButton = showCloseButton;
     self.player.showScaleButton = showScaleButton;
-    [self.player openWithFrame:CGRectMake(x, y, width, height) path:[self absPath:path] startTime:startTime];
+    self.player.startTime = startTime;
+    self.player.endTime = endTime;
+    [self.player openWithFrame:CGRectMake(x, y, width, height) path:[self absPath:path]];
 }
 
 
