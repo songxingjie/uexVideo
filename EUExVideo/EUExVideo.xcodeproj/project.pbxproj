@@ -102,7 +102,6 @@
 		4231E3181C993EFC00A72CD0 /* play@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@3x.png"; sourceTree = "<group>"; };
 		4234ABD11EB828F900270809 /* ReactiveObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveObjC.framework; sourceTree = "<group>"; };
 		4281C4081DF9017E00BE3D1C /* AppCanKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCanKit.framework; sourceTree = "<group>"; };
-		4281C40B1DF9028900BE3D1C /* ACEBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACEBaseViewController.h; sourceTree = "<group>"; };
 		4281C40C1DF9028900BE3D1C /* WidgetOneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetOneDelegate.h; sourceTree = "<group>"; };
 		42A6E4E81C9681A0004F8765 /* uexVideoAssetExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uexVideoAssetExporter.h; sourceTree = "<group>"; };
 		42A6E4E91C9681A0004F8765 /* uexVideoAssetExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uexVideoAssetExporter.m; sourceTree = "<group>"; };
@@ -129,6 +128,9 @@
 		42B3D4671E6E9E2B00F215B3 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		42B3D4681E6E9E2B00F215B3 /* dot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dot.png; sourceTree = "<group>"; };
 		42B3D4691E6E9E2B00F215B3 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
+		42ED46381EE953EE00CF1370 /* ACEBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACEBaseViewController.h; sourceTree = "<group>"; };
+		42ED46391EE953EE00CF1370 /* ACEUINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACEUINavigationController.h; sourceTree = "<group>"; };
+		42ED463A1EE958EE00CF1370 /* ACEInterfaceOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACEInterfaceOrientation.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,7 +233,9 @@
 		4281C40A1DF9028900BE3D1C /* engineHeader */ = {
 			isa = PBXGroup;
 			children = (
-				4281C40B1DF9028900BE3D1C /* ACEBaseViewController.h */,
+				42ED463A1EE958EE00CF1370 /* ACEInterfaceOrientation.h */,
+				42ED46381EE953EE00CF1370 /* ACEBaseViewController.h */,
+				42ED46391EE953EE00CF1370 /* ACEUINavigationController.h */,
 				4281C40C1DF9028900BE3D1C /* WidgetOneDelegate.h */,
 			);
 			path = engineHeader;

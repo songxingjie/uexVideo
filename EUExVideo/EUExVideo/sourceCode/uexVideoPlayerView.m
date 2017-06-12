@@ -157,26 +157,17 @@ static OSSpinLock lock;
 - (void)enterFullScreen{
     OSSpinLockLock(&lock);
     if (!self.isFullScreen) {
-        self.rootView = self.superview;
-        self.normalFrame = self.frame;
-        UIInterfaceOrientation orientation = (UIInterfaceOrientation)[UIDevice currentDevice].orientation;
-        if (orientation != UIInterfaceOrientationLandscapeRight && orientation != UIInterfaceOrientationLandscapeLeft) {
-            [self rotateToOrientation:UIInterfaceOrientationLandscapeRight];
-            self.rotatedFromPortrait = YES;
-        }
-        
 
-        [[UIApplication sharedApplication].keyWindow addSubview:self];
-        self.frame = [UIScreen mainScreen].bounds;
-        [self layoutIfNeeded];
-        
         //CGRect rect = [[UIApplication sharedApplication].keyWindow convertRect:[UIScreen mainScreen].bounds toView:self.superview];
         //self.frame = rect;
-
-        self.isFullScreen = YES;
-        if(self.delegate && [self.delegate respondsToSelector:@selector(playerViewDidEnterFullScreen:)]){
-            [self.delegate playerViewDidEnterFullScreen:self];
+        
+        
+        if(self.delegate && [self.delegate respondsToSelector:@selector(playerViewEnterFullScreenButtonDidClick:)]){
+            [self.delegate playerViewEnterFullScreenButtonDidClick:self];
         }
+        
+        self.isFullScreen = YES;
+
     }
     OSSpinLockUnlock(&lock);
     
@@ -185,17 +176,9 @@ static OSSpinLock lock;
 - (void)exitFullScreen{
     OSSpinLockLock(&lock);
     if (self.isFullScreen) {
-        if(self.delegate && [self.delegate respondsToSelector:@selector(playerViewWillExitFullScreen:)]){
-            [self.delegate playerViewWillExitFullScreen:self];
+        if(self.delegate && [self.delegate respondsToSelector:@selector(playerViewExitFullScreenButtonDidClick:)]){
+            [self.delegate playerViewExitFullScreenButtonDidClick:self];
         }
-        if (self.rotatedFromPortrait) {
-            [self rotateToOrientation:UIInterfaceOrientationPortrait];
-            self.rotatedFromPortrait = NO;
-        }
-        self.frame = self.normalFrame;
-        [self.rootView addSubview:self];
-        self.normalFrame = CGRectZero;
-        self.rootView = nil;
         self.isFullScreen = NO;
 
     }

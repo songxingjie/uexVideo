@@ -59,10 +59,17 @@ typedef  NS_ENUM(NSInteger,uexVideoPlayerViewStatus){
 - (void)pause;
 - (void)close;
 
+- (void)rotateToOrientation:(UIInterfaceOrientation)orientation;
 @end
 
 @protocol uexVideoPlayerViewDelegate <NSObject>
+
 @optional
+//由delegate去实现进去/退出全屏的操作
+- (void)playerViewEnterFullScreenButtonDidClick:(uexVideoPlayerView *)playerView;
+- (void)playerViewExitFullScreenButtonDidClick:(uexVideoPlayerView *)playerView;
+    
+
 
 //播放完成;
 - (void)playerViewDidFinishPlaying:(uexVideoPlayerView *)playerView;
@@ -72,10 +79,7 @@ typedef  NS_ENUM(NSInteger,uexVideoPlayerViewStatus){
 //通过此回调处理关闭按钮的点击事件
 - (void)playerViewCloseButtonDidClick:(uexVideoPlayerView *)playerView;
 
-//进入全屏之后应该禁用AutoRotate 隐藏Status Bar，这些需要rootViewController去处理。
-//在下面2个回调中处理这些事情!
-- (void)playerViewDidEnterFullScreen:(uexVideoPlayerView *)playerView;
-- (void)playerViewWillExitFullScreen:(uexVideoPlayerView *)playerView;
+
 
 //time boundary监听
 - (void)playerViewDidReachEndTime:(uexVideoPlayerView *)playerView;
