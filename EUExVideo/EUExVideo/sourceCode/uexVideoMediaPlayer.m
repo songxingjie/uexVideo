@@ -73,6 +73,7 @@
     }
     self.playerView = [[uexVideoPlayerView alloc]initWithFrame:frame URL:movieURL];
     self.playerView.delegate = self;
+    self.playerView.isAutoEndFullScreen = self.isAutoEndFullScreen;
     @weakify(self);
     [[self rac_signalForSelector:@selector(playerViewEnterFullScreenButtonDidClick:) fromProtocol:@protocol(uexVideoPlayerViewDelegate)]subscribeNext:^(id x) {
 

@@ -270,7 +270,7 @@ static OSSpinLock lock;
     [[[NSNotificationCenter defaultCenter] rac_addObserverForName:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem]
      subscribeNext:^(id x) {
          @strongify(self);
-         if (!self.isForcedFullScreen) {
+         if (!self.isForcedFullScreen && self.isAutoEndFullScreen) {
              [self exitFullScreen];
          }
          if (self.delegate && [self.delegate respondsToSelector:@selector(playerViewDidFinishPlaying:)]) {
@@ -311,7 +311,7 @@ static OSSpinLock lock;
         @strongify(self);
         if(!self.isFullScreen){
             [self enterFullScreen];
-        }else if(!self.isForcedFullScreen){
+        }else if(!self.isForcedFullScreen && self.isAutoEndFullScreen){
             [self exitFullScreen];
         }
     }];

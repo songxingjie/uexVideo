@@ -68,6 +68,8 @@ NSTimeInterval key = info[UEX_VIDEO_KEY_TO_NSSTRING(key)] ? [info[UEX_VIDEO_KEY_
     UEX_VIDEO_GET_FLOAT_VALUE(info, x,0);
     UEX_VIDEO_GET_FLOAT_VALUE(info, y,0);
     UEX_VIDEO_GET_BOOLEAN_VALUE(info,scrollWithWeb,NO);
+    UEX_VIDEO_GET_BOOLEAN_VALUE(info,isAutoEndFullScreen,NO);
+    
     
     self.player = [[uexVideoMediaPlayer alloc]initWithEUExVideo:self];
     
@@ -78,6 +80,7 @@ NSTimeInterval key = info[UEX_VIDEO_KEY_TO_NSSTRING(key)] ? [info[UEX_VIDEO_KEY_
     self.player.showScaleButton = showScaleButton;
     self.player.startTime = startTime;
     self.player.endTime = endTime;
+    self.player.isAutoEndFullScreen = isAutoEndFullScreen;
     [self.player openWithFrame:CGRectMake(x, y, width, height) path:[self absPath:path]];
 }
 

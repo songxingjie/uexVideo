@@ -34,6 +34,7 @@
 @property (nonatomic,assign)BOOL forceFullScreen;
 @property (nonatomic,assign)BOOL showCloseButton;
 @property (nonatomic,assign)BOOL showScaleButton;
+@property (nonatomic,assign)BOOL isAutoEndFullScreen;
 -(instancetype)initWithEUExVideo:(EUExVideo *)euexObj;
 
 - (void)openWithFrame:(CGRect)frame path:(NSString *)inPath;

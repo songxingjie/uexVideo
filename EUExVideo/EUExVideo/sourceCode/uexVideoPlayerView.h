@@ -38,6 +38,7 @@ typedef  NS_ENUM(NSInteger,uexVideoPlayerViewStatus){
 //以下这些只读参数都可用于KVO
 @property (nonatomic,assign,readonly)BOOL isFullScreen;//当前是否是全屏模式
 @property (nonatomic,assign,readonly)BOOL isPlaying;//当前是否正在播放
+@property (nonatomic,assign)BOOL isAutoEndFullScreen;
 @property (nonatomic,assign,readonly)NSTimeInterval currentTime;//当前播放时间
 @property (nonatomic,assign,readonly)NSTimeInterval duration;//总播放时长
 @property (nonatomic,assign,readonly)NSTimeInterval bufferedDuration;//已缓冲时长

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <uexplugins>
-  	<plugin uexName="uexVideo" version="4.1.4" build="4">
-        <info>4:修正4.1引擎下的全屏问题</info>
+  	<plugin uexName="uexVideo" version="4.1.5" build="5">
+  		<info>5:新增isAutoEndFullScreen参数</info>
+        <build>4:修正4.1引擎下的全屏问题</build>
         <build>3:更新RAC依赖库</build>
         <build>2:添加1x的图片资源;增大关闭按钮的感应区域</build>
         <build>1:修正视频播放画面显示不全、竖屏跳转横屏会卡在原位置的问题</build>
