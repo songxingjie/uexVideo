@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <uexplugins>
-  	<plugin uexName="uexVideo" version="4.1.5" build="5">
-  		<info>5:新增isAutoEndFullScreen参数</info>
+  	<plugin uexName="uexVideo" version="4.1.6" build="6">
+        <info>6:新增本地视频openPicker接口</info>
+        <build>5:新增isAutoEndFullScreen参数</build>
         <build>4:修正4.1引擎下的全屏问题</build>
         <build>3:更新RAC依赖库</build>
         <build>2:添加1x的图片资源;增大关闭按钮的感应区域</build>
