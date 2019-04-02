@@ -114,6 +114,9 @@ NSTimeInterval key = info[UEX_VIDEO_KEY_TO_NSSTRING(key)] ? [info[UEX_VIDEO_KEY_
         if (fileType && [fileType.lowercaseString isEqual:@"mov"]) {
             recorder.fileType = uexVideoRecorderOutputFileTypeMOV;
         }
+        if (info[@"isCameraFront"]) {
+            recorder.isCameraFront = [info[@"isCameraFront"] boolValue];
+        }
     }
     self.recorder = recorder;
     [recorder statRecord];

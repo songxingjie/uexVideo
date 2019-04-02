@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger,uexVideoRecorderOutputFileType) {
 @property (nonatomic,assign)uexVideoRecorderResolution resolution;
 @property (nonatomic,assign)uexVideoRecorderOutputFileType fileType;
 @property (nonatomic,assign)uexVideoRecorderBitRateLevel bitRateLevel;
-
+@property (nonatomic,assign)BOOL isCameraFront;//判断是否是前置摄像还是后置，默认为后置
 
 
 - (instancetype)initWithEUExVideo:(EUExVideo *)euexObj;

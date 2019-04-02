@@ -33,6 +33,7 @@
 @property (nonatomic,weak)EUExVideo *euexObj;
 @property (nonatomic,strong)uexVideoAssetExporter *exporter;
 
+
 @end;
 
 @implementation uexVideoRecorder
@@ -101,6 +102,13 @@
     picker.delegate = self;
     picker.mediaTypes = @[(NSString *)kUTTypeMovie];
     picker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    //摄像头前后置判断
+    if (self.isCameraFront) {
+        picker.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+    }else {
+        picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+    }
+   
     switch (self.resolution) {
         case uexVideoRecorderResolution640x480: {
             picker.videoQuality = UIImagePickerControllerQualityType640x480;
